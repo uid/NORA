@@ -14,25 +14,34 @@ function calculate(text) {
 }
 
 function read_operand(tokens) {
+    //interpret the first token in the array as a number or (. 
     var num = tokens[0];
     tokens.shift();
-    num = parseInt(num);
-    if (isNaN(num)) {
-          //throw error  
-          throw "number expected";
+    if (num == '(') {
+        num = evaluate(tokens);
+        var temp = tokens[0];
+        if (temp != ')') throw "ill-formed expression"
+        tokens.shift();
     }
     else {
-        return num;
-    }   
+        num = parseInt(num);
+        if (isNaN(num)) {
+              //throw error  
+              throw "number expected";
+        }
+    }
+    return num;   
 }
 
 function evaluate (tokens) {
+    //processes the token array element-by-element
     if (tokens.length == 0) {
         throw "missing operand";
     }
     var value = read_operand(tokens);
     while (tokens.length > 0) {
-        var operator = tokens[0];
+        var operator = tokens[0]; 
+        if (operator == ')') break;
         tokens.shift();
         if (tokens.length == 0) {
             throw "missing operand";
