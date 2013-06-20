@@ -19,13 +19,17 @@
 		return app.use(express["static"](__dirname + '/static/'));
 	});
 
-	everyone.now.sendNewChat = function(chatMessage, tag, msg_id, selectedText) {
-		return everyone.now.gotNewChat(chatMessage, tag, msg_id, sentence, selectedText);
+	everyone.now.sendNewChat = function(chatMessage, tag, msgID, selectedText) {
+		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText);
 	};
 
 	everyone.now.serverMoveMsg = function(id, pos) {
 		return everyone.now.moveMsg(id, pos);
 	}
+    
+    everyone.now.serverMergeThread = function (threadSource, threadTarget) {
+        return everyone.now.mergeThread(threadSource, threadTarget);
+    }
     
     var users = 0; 
     var numReady = 0;
@@ -55,4 +59,20 @@
     everyone.now.updateSentenceNumServer = function(sentenceNum) {
         sentence = sentenceNum;
     }
+        
+    everyone.now.serverLikeMsg = function(msgID) {
+        //msgID is the number id of the message that has been liked
+        return everyone.now.updateLikes(msgID);
+    }
+    
+    everyone.now.serverAddMsg = function(msgID) {
+        //msgID is the number id of the message that has been liked
+        return everyone.now.addMsg(msgID);
+    }
+    
+    everyone.now.serverDragMsg = function(msgID) {
+        //msgID is the number id of the message that has been liked
+        return everyone.now.dragMsg(msgID);
+    }
+    
 }).call(this);

@@ -1,15 +1,21 @@
+
+
 .msg {
 	border:1px solid #000;
 	background: #FFFFCC;
 	padding:2px;
-	position:absolute;
-	width: 75px;
 	word-wrap: break-word;
 	text-align: center;
+    z-index:-1;
 }
 
 .grey {
 	color:#999;
+}
+
+.thread {
+    position:absolute;
+	width: 10%;
 }
 
 .selectedText {

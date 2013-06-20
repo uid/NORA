@@ -58,8 +58,6 @@ now.ready(function () {
         $('#sent_'+sentenceNum).removeClass('grey');
         $('#sent_'+(sentenceNum-1)).addClass('grey');
         document.getElementById("nextSentence").disabled= false;
-        console.log(sentenceNum);
-        console.log(sentences.length - 1);
         if (sentenceNum == sentences.length - 1) {
             for (var s in sentences) {
                 $('#sent_'+s).removeClass('grey');
@@ -94,6 +92,7 @@ now.ready(function () {
 	};
     
     now.selecting = function(texty, msgID){
+        document.getElementById('msg_'+msgID).style.zIndex = 2;
         var spanExists = document.getElementById('st_'+msgID);
         if (spanExists==null) {
             var searching = unescape(texty);
@@ -116,38 +115,118 @@ now.ready(function () {
         }
     }
     
+    now.likeMsg = function(msgID) {
+        $('#like_'+msgID).remove();
+        now.serverLikeMsg(msgID);
+    }
+    
+    now.updateLikes = function(msgID) {
+        var prevLiked = parseInt($('#msg_'+msgID).attr('data-likes_'+msgID));
+        prevLiked += 1;
+        document.getElementById('msg_'+msgID).setAttribute('data-likes_'+msgID, prevLiked);
+    }
+    
+    now.dragMsg = function(msgID) {
+        //msgID is already just the number
+        var chatMessage = $('#chatMsg_'+msgID).text();
+        var tag = $('#tag_'+msgID).text();
+        var selectedText = $('#msg_'+msgID).attr('data-ST');
+        document.getElementById('msg_'+msgID).remove();
+        var d = new Date();
+        var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
+        now.sendNewChat(chatMessage, tag, msg_id, selectedText);
+    }
+    
 	now.gotNewChat = function(chatMessage, tag, msg_id, sentence,selectedText) {
         var texty = escape(String(selectedText));
-        $('#messages').append('<div class=msg id=msg_'+msg_id+' onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>('+(sentence+1)+ ') '+ tag + '<br>' + chatMessage + '</div>');
-        /*  var text = '<span class=selectedText id=st_'+msg_id+'>' + selectedText + '.</span>';   
-        $('#messages').append('<div class=msg id=msg_'+msg_id+' onclick=now.selecting('+msg_id+')>'+(sentence+1)+ ' '+ tag + '<br>' + chatMessage + '</div>');*/
-         
+        var threadChat = $();
+        var chatMsg = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
+        var thread = $('<div class=thread id=t_'+msg_id+'> <div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>('+(sentence+1)+ ') <div id=tag_'+msg_id+'>'+ tag + '</div><br><div id=chatMsg_'+msg_id+'>' + chatMessage + '</div><span id=likes_'+msg_id+' style=display:none><br><button onclick=now.serverDragMsg('+msg_id+') id=drag_'+msg_id+' style=display:none>Drag Out</button><button onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+'>Like</button><br>#Likes: <div id=numLikes_'+msg_id+'></div> </span></div>'+chatMsg+'</div>');
+        
+        $('#messages').append(thread);
+        
+        $('#chatbox_'+msg_id).keypress(function (event) {   
+            if (event.keyCode === 13) {
+                now.serverAddMsg(msg_id);
+            }
+        });
+        
+        $('#msg_'+msg_id).hover(
+            function() {
+                var numLikes = $('#msg_'+msg_id).attr('data-likes_'+msg_id);
+                $('div#numLikes_'+msg_id).text(numLikes);
+                document.getElementById('likes_'+msg_id).style.display = '';
+                //$(this).append($('<span><button onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+'>Like</button><br>#Likes: '+numLikes+'</span>'));
+            },
+            function() {
+                document.getElementById('likes_'+msg_id).style.display = 'none';
+                //$(this).find('span').remove();
+            }
+        );
+        
 	    var ypos = 10;
 	    var xpos = (parseInt(msg_id)%60)*10;
-	    $('#msg_'+msg_id).css('top', ypos+'px');
-	    $('#msg_'+msg_id).css('left', xpos+'px');
+	    thread.css('top', ypos+'px');
+	    thread.css('left', xpos+'px');
         
-		$(function() {
-			$('#msg_'+msg_id).draggable({
-				stop: function(event, ui) {
-					var id = '#' + event.target.id;
-					now.serverMoveMsg(id, $(id).position());
-				}
-			});
-		});
+		thread.draggable({
+            stop: function(event, ui) {
+                var id = event.target.id;
+                console.log("here "+id);
+                now.serverMoveMsg('#'+id, $(event.target).position());
+            }
+        });
 		
-	    $(function() {
-			$('#msg_'+msg_id).droppable({
-				drop: function(event, ui) {
-					var id = '#' + event.target.id;
-					var idDrop = '#' + this.id;
-					console.log("I was just dropped on!");
-					now.moveMsg($(this), ($(id).position()));
-				}
-			});
+		
+	    thread.droppable({
+            drop: function(event, ui) {
+                console.log("I "+event.target.id+" was just dropped on by "+ui.draggable.attr('id'));
+                var threadSource = event.target.id;
+                var threadTarget = ui.draggable.attr('id');
+                now.serverMergeThread(threadSource, threadTarget);
+                
+            }
+
 	   });
 	 
 	};
     
+    now.addMsg = function(msg_id){
+        //adding message to thread
+            var d = new Date();
+            var msgid = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
+            var chatbox = $('#chatbox_'+msg_id);
+            var chatMsg = chatbox.val();
+            var msg = '<div class=msg id=msg_'+msgid+' data-likes_'+msgid+'= 0><div id=chatMsg_'+msgid+'>' + chatMsg + '</div><span id=likes_'+msgid+' style=display:none><br><button onclick=now.likeMsg('+msgid+') id=like_'+msgid+'>Like</button><br>#Likes: <div id=numLikes_'+msgid+'></div> </span></div>';
+            
+            chatbox.before(msg);
+            $('#msg_'+msgid).hover(
+                function() {
+                    var numLikes = $('#msg_'+msgid).attr('data-likes_'+msgid);
+                    $('div#numLikes_'+msgid).text(numLikes);
+                    document.getElementById('likes_'+msgid).style.display = '';
+                },
+                function() {
+                    document.getElementById('likes_'+msgid).style.display = 'none';
+                }
+            );
+            chatbox.val('');
+    };
+    
+    now.mergeThread = function(threadSource, threadTarget) {
+        var idT = threadSource.substring(2); 
+        var tChat = $('#chatbox_'+idT);
+        var msgs = $('#'+ threadSource + ' .msg');
+        $('#'+threadTarget).prepend(msgs);
+        $('#'+threadSource).remove();
+        $('#'+threadTarget).children('div').each(function() {
+            var idChat = $(this).attr('id');
+            var idNum = idChat.substring(4);
+            if(idNum != idT) {
+                $(this).find('button').css('display', '');
+            }
+        });
+        //$('#'+threadTarget).attr('id', threadSource);
+    };
     
 }); 
