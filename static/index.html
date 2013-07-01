@@ -10,18 +10,21 @@
 </HEAD>
     <div class="colmask leftmenu">
         <div class="colleft">
-            <div class="col1">
-                <div id="messages"> </div>
+            <div class="col1" id="col1">
+                <div class = "messages" id="messages0"> </div>
             </div>
             <div class="col2">
+                <div style="text-align: center"><button id="changeText">Change Text</button>   
+                    <textarea rows="10" style="width:100%; display:none;" id="changeTextArea"></textarea>        
+                </div>      
                 <br>
                 <div id="content">
-                        <p> (1) I know what your e-mail in-box looks like, and it isn&#x2019;t pretty: a babble of come-ons and lies from hucksters and con artists. 
+                        (1) I know what your e-mail in-box looks like, and it isn&#x2019;t pretty: a babble of come-ons and lies from hucksters and con artists. 
             (2) To find your real e-mail, you must wade through the torrent of fraud and obscenity known politely as &#x201c;unsolicited bulk e-mail&#x201d; and colloquially as &#x201c;spam.&#x201d; 
             (3) In a perverse tribute to the power of the online revolution, we are all suddenly getting the same mail: easy weight loss, get-rich-quick schemes, etc. 
             (4) The crush of these messages is now numbered in billions per day. 
             (5) &#x201c;It&#x2019;s becoming a major systems and engineering and network problem,&#x201d; says one e-mail expert. 
-            (6) &#x201c;Spammers are gaining control of the Internet.&#x201d; </p>
+            (6) &#x201c;Spammers are gaining control of the Internet.&#x201d; 
                 </div>
                 
                 <div id="chat">
@@ -40,6 +43,9 @@
                         <button id='nextSentence' onClick="this.disabled=true;"> Next Sentence Please!</button> <br>
                         <div id= "usersReady"><br></div> 
                         <div id="pplReady"></div>
+                        <button id='endSession' onClick="this.disabled=true;"> End Session</button> <br>
+                        <div id= "usersReadyES"><br></div> 
+                        <div id="pplReadyES"></div>
                        <!--  <button onclick="submitChat()"> SUBMIT </button> -->
                     </center>
                 </div>

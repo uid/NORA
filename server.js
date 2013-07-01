@@ -19,24 +19,43 @@
 		return app.use(express["static"](__dirname + '/static/'));
 	});
 
-	everyone.now.sendNewChat = function(chatMessage, tag, msgID, selectedText) {
-		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText);
+    var users = 0; 
+    var numReady = 0;
+    var numReadyES = 0;
+    var sentence = 0;
+    var msgNum = -1;
+    var messages = new Array();
+    var maxYPos = 0;
+    var maxSentences;
+    
+    everyone.now.serverNumMaxSentences = function(numSentences) {
+       maxSentences = numSentences;
+    }
+    
+	everyone.now.serverGotNewChat = function(chatMessage, tag, msgID, selectedText)    {
+        msgNum += 1;
+        var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgNum];
+        messages.push(parameter);
+		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgNum);
 	};
 
 	everyone.now.serverMoveMsg = function(id, pos) {
+        var parameter = ["mm", id, pos];
+        messages.push(parameter);
+        var newY = pos.top;
+        if (newY > maxYPos) maxYPos = newY;
 		return everyone.now.moveMsg(id, pos);
 	}
     
     everyone.now.serverMergeThread = function (threadSource, threadTarget) {
+        var parameter = ["mt", threadSource, threadTarget];
+        messages.push(parameter);
         return everyone.now.mergeThread(threadSource, threadTarget);
     }
     
-    var users = 0; 
-    var numReady = 0;
-    var sentence = 0;
-    everyone.on("connect", function(){
+    nowjs.on("connect", function(){
         users+=1;
-        sentence = 0;
+        return this.now.loadMessages(messages, sentence);
     });
     
     everyone.on("disconnect", function(){
@@ -47,32 +66,70 @@
         return everyone.now.nextSentence(users, numReady);
     }
     
+    everyone.now.endSessionServer = function() {
+        return everyone.now.endSession(users, numReadyES);
+    }
+    
     everyone.now.incrementUsersReady = function() {
         numReady +=1;
+    }
+    
+    everyone.now.incrementUsersReadyES = function() {
+        numReadyES +=1;
+    }
+    
+    everyone.now.updateServerES = function() {
+        messages = new Array();
+        numReadyES = 0;
+        msgNum = 0;
+        return everyone.now.updateES(sentence);
+    }
+    
+    everyone.now.reinitializeServer = function() {
+        sentence = 0;
+        return everyone.now.reinitializeES();
     }
 
     everyone.now.updateServer = function() {
         numReady = 0;
-        return everyone.now.updateSentence(sentence);
+        sentence+=1;
+        height = maxYPos;
+        maxYPos = 0;
+        messages.push(["nmd", sentence, height])
+        return everyone.now.updateSentence(sentence, height, maxSentences);
     }
-    
-    everyone.now.updateSentenceNumServer = function(sentenceNum) {
-        sentence = sentenceNum;
-    }
-        
+
     everyone.now.serverLikeMsg = function(msgID) {
         //msgID is the number id of the message that has been liked
+        var parameter = ["ul", msgID];
+        messages.push(parameter);
         return everyone.now.updateLikes(msgID);
     }
     
-    everyone.now.serverAddMsg = function(msgID) {
+    everyone.now.serverAddMsg = function(msgID, chatText) {
         //msgID is the number id of the message that has been liked
-        return everyone.now.addMsg(msgID);
+        var parameter = ["am", msgID, chatText];
+        messages.push(parameter);
+        return everyone.now.addMsg(msgID, chatText);
     }
     
     everyone.now.serverDragMsg = function(msgID) {
         //msgID is the number id of the message that has been liked
+        var parameter = ["dm", msgID];
+        messages.push(parameter);
         return everyone.now.dragMsg(msgID);
     }
     
+    everyone.now.serverChangeText = function(text) {
+        //text is the new text the person wants to review
+        var parameter = ["ct", text];
+        messages.push(parameter);
+        everyone.now.changeText(text);
+    }
+    
+    everyone.now.serverLastSentence = function() {
+        var parameter = ["ls", maxSentences];
+        messages.push(parameter);
+        everyone.now.lastSentence(maxSentences);
+    }
 }).call(this);

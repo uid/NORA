@@ -1,4 +1,7 @@
-
+.messages {
+    border-top:thick double #000000;
+    height:300px;
+}
 
 .msg {
 	border:1px solid #000;
@@ -37,14 +40,15 @@ p {
 }
 
 #content {
-	height:60%;
+    height:50%;
 	overflow-y:scroll;
 	text-align:justify;
 }
 
 #chat {
 	border-top:1px solid #000;
-	height:25%;
+	overflow-y:scroll;
+    height: 40%;
 	padding-top:10px;
 }
 
@@ -54,8 +58,7 @@ p {
 	clear:both;
 	float:left;
 	width:100%;			/* width of whole page */
-	height:100%;
-	overflow:hidden;		/* This chops off any overhanging divs */
+	height:100%;		/* This chops off any overhanging divs */
 }
 /* common column settings */
 .colright,
@@ -66,21 +69,28 @@ p {
 	height:100%;
 	position:relative;
 }
-.col1,
-.col2,
-.col3 {
+.col1 {
 	float:left;
 	position:relative;
 	padding:0 0 0 0;
-	overflow:hidden;
+    overflow-y:scroll;
 	height:100%;
 }
+
+.col2,
+.col3 {
+	float:left;
+	position:fixed;
+	padding:0 0 0 0;
+	height:100%;
+}
+
 /* 2 Column (left menu) settings */
 .leftmenu {
 	background:#fff;		/* right column background colour */
 }
 .leftmenu .colleft {
-	right:75%;			/* right column width */
+	right:73%;			/* right column width */
 	background:#f4f4f4;	/* left column background colour */
 }
 .leftmenu .col1 {
@@ -88,6 +98,8 @@ p {
 	left:102%;			/* 100% plus left column left padding */
 }
 .leftmenu .col2 {
-	width:23%;			/* left column content width (column width minus left and right padding) */
-	left:6%;			/* (right column left and right padding) plus (left column left padding) */
+	width:25%;			/* left column content width (column width minus left and right padding) */
+	left:0%;			/* (right column left and right padding) plus (left column left padding) */
+	padding: 1%;
+	background:#f4f4f4;
 }
