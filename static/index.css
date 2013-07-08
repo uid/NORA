@@ -1,5 +1,6 @@
 .messages {
     border-top:thick double #000000;
+    padding-top: 20px; 
     height:300px;
 }
 
@@ -8,8 +9,8 @@
 	background: #FFFFCC;
 	padding:2px;
 	word-wrap: break-word;
-	text-align: center;
-    z-index:-1;
+    height: 50px;
+    overflow: scroll; 
 }
 
 .grey {
@@ -18,7 +19,7 @@
 
 .thread {
     position:absolute;
-	width: 10%;
+	width: 125px;
 }
 
 .selectedText {
@@ -40,7 +41,6 @@ p {
 }
 
 #content {
-    height:50%;
 	overflow-y:scroll;
 	text-align:justify;
 }
@@ -48,7 +48,7 @@ p {
 #chat {
 	border-top:1px solid #000;
 	overflow-y:scroll;
-    height: 40%;
+    height: 30%;
 	padding-top:10px;
 }
 

@@ -1,5 +1,6 @@
 now.loadMessages = function(messages, sentence) {
     now.startup(sentence, "text");
+    $('#chatbox').jqte();
     for(var i =0; i<messages.length; i++) {
         var parameters = messages[i];
         if (parameters[0] == "gnc") {
@@ -31,8 +32,8 @@ now.loadMessages = function(messages, sentence) {
             now.updateLikes(parameters[1]);
         }
         if (parameters[0] == "am") {
-            //now.addMsg(msgID, chatText)
-            now.addMsg(parameters[1], parameters[2]);
+            //now.addMsg(msgID, msg_id chatText)
+            now.addMsg(parameters[1], parameters[2], parameters[3]);
         }
         if (parameters[0] == "dm") {
             //now.dragMsg(msgID)
@@ -58,7 +59,7 @@ now.loadMessages = function(messages, sentence) {
 now.ready(function () {    
     $('#changeText').click(function (event) {
         var password = prompt("what's the password?");
-        if(password == "NORA") {
+        if(password == "nora") {
             document.getElementById('changeTextArea').style.display = '';
         }
         else {
@@ -85,17 +86,18 @@ now.ready(function () {
 
     now.startup = function (sentence, type) {
         var sentences;
-        if(type =="html") sentences = document.getElementById('content').innerHTML.split(".");
+        if(type == "html") sentences = document.getElementById('content').innerHTML.split(". ");
         else sentences = $('#content').text().split(".");
         $('#content').empty();
         var numSentences = 0;
         for (var s in sentences) {
             numSentences += 1;
-            var text = '<span class=grey id=sent_'+s+'>' + sentences[s] + '.</span>';
+            var text = '<span class=grey id=sent_'+s+'>('+(parseInt(s)+1)+') ' + sentences[s] + '. </span>';
             if (s == sentences.length - 1) break;
             $('#content').append(text);
         }
         $('#sent_'+sentence).removeClass('grey');
+        $('#sentence').text($('#sent_'+sentence).text());
         now.serverNumMaxSentences(numSentences);
     }
     
@@ -146,7 +148,7 @@ now.ready(function () {
             $(this).remove();
             now.reinitializeServer();
         });
-        $('#col1').append('<div class=messages id=messages0></div>');
+        $('#col1').append('<div class=messages><div id=messages0></div></div>');
         now.startup(0, "text");
     };
     
@@ -156,11 +158,6 @@ now.ready(function () {
         $('div#pplReadyES').text("");
     };
     
-    $('#nextSentence').click(function (event) {
-        now.incrementUsersReady();
-		now.nextSentenceServer();
-	});
-    
     now.nextSentence = function(users, numReady) {
         $('div#usersReady').text("Users Ready:");
         $('div#pplReady').text(numReady+"/"+users);
@@ -169,6 +166,11 @@ now.ready(function () {
             now.updateServer();
         }
     }
+    
+    $('#nextSentence').click(function (event) {
+        now.incrementUsersReady();
+        now.nextSentenceServer();
+    });
     
     now.lastSentence = function(maxSentenceNum) {
         for (var i =0; i<maxSentenceNum; i++) {
@@ -183,6 +185,7 @@ now.ready(function () {
         $('#sent_'+sentenceNum).removeClass('grey');
         $('#sent_'+(sentenceNum-1)).addClass('grey');
         document.getElementById("nextSentence").disabled= false;
+        $('#sentence').text($('#sent_'+sentenceNum).text());
         now.newMsgDiv(sentenceNum, height);
         if (sentenceNum == maxSentenceNum - 1) {
             now.serverLastSentence();
@@ -190,29 +193,52 @@ now.ready(function () {
     };
     
     now.newMsgDiv = function (sentenceNum, height) {
-        $('#messages'+(sentenceNum-1)).css('height', height+200+'px');
-        $('#col1').append('<div class=messages id=messages'+sentenceNum+'></div>');
+        $('#messages').prepend('<div id=messages'+sentenceNum+'></div>');
+        $('#messages'+(sentenceNum)).css('height', 200+'px');
+       
         var objDiv = document.getElementById('col1');
         objDiv.scrollTop = objDiv.scrollHeight;
     }
     
-    $('#chatbox').keypress(function (event) {
-		if (event.keyCode === 13) { // enter
-			var tag = "";
-			if ($('#grammar').is(':checked')) tag = tag.concat(" G ");
-			if ($('#logic').is(':checked')) tag = tag.concat(" L ");
-			if ($('#style').is(':checked')) tag = tag.concat(" S ");
-            var d = new Date();
-            var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
-			now.serverGotNewChat($('#chatbox').val(), tag, msg_id, "");
-			$('#chatbox').val('');
-			tag = "";
-			$('#grammar').attr('checked', false);
-			$('#logic').attr('checked', false);
-			$('#style').attr('checked', false);
-			return false;
-		}
+    $('.tags').click(function() {
+        console.log("tag was clicked");
+        console.log(this.id);
+        this.disabled = true;
+        $('#chatbox').jqteAddTags("#"+String(this.id)+" ");
+    });
+    
+    $('#submitChat').click(function (event) {
+        // getting text from chatbox  console.log($('#chatbox').jqteText());
+        var tag = $('#chatbox').jqteTags();
+        var d = new Date();
+        var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
+        now.serverGotNewChat($('#chatbox').jqteText(), tag, msg_id, "");
+        $('#chatbox').jqteVal('');
+        $('#chatbox').jqteClearTags();
+        $('.tags').each(function() {
+            this.disabled = false;
+        });
 	});
+    
+//    $('#chatbox').keypress(function (event) {
+//        console.log("oh i'm typing why arent you working");
+//		if (event.keyCode === 13) { // enter
+//			var tag = "";
+//            console.log("oh i'm here!!");
+//			if ($('#grammar').is(':checked')) tag = tag.concat(" G ");
+//			if ($('#logic').is(':checked')) tag = tag.concat(" L ");
+//			if ($('#style').is(':checked')) tag = tag.concat(" S ");
+//            var d = new Date();
+//            var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
+//			now.serverGotNewChat($('#chatbox').val(), tag, msg_id, "");
+//			$('#chatbox').val('');
+//			tag = "";
+//			$('#grammar').attr('checked', false);
+//			$('#logic').attr('checked', false);
+//			$('#style').attr('checked', false);
+//			return false;
+//		}
+//	});
     
 	now.moveMsg = function(id, pos) {
         if (pos.top <0) {
@@ -263,6 +289,7 @@ now.ready(function () {
     
     now.likeMsg = function(msgID) {
         $('#like_'+msgID).remove();
+        $('span#likeButton_'+msgID).append('<img src=like.png style=width:10%; height:10%;>');
         now.serverLikeMsg(msgID);
     }
     
@@ -285,36 +312,55 @@ now.ready(function () {
     
 	now.gotNewChat = function(chatMessage, tag, msg_id, sentence, selectedText, msgNum) {
         var texty = escape(String(selectedText));
-        var threadChat = $();
-        var chatMsg = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
-        var thread = $('<div class=thread id=t_'+msg_id+'> <div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>('+(sentence+1)+ ') <div id=tag_'+msg_id+'>'+ tag + '</div><br><div id=chatMsg_'+msg_id+'>' + chatMessage + '</div><span id=likes_'+msg_id+' style=display:none><br><button onclick=now.serverDragMsg('+msg_id+') id=drag_'+msg_id+' style=display:none>Drag Out</button><button onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+'>Like</button><br>#Likes: <div id=numLikes_'+msg_id+'></div> </span></div>'+chatMsg+'</div>');
+        var threadStart = '<div class=thread id=t_'+msg_id+'>';
+        var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>';
+        var end = '</div>';
+        var tag = '<div id=tag_'+msg_id+'>'+ tag + '</div>';
+        var chatMessageStart = '<br><div id=chatMsg_'+msg_id+'>';
+        var like = '<span style=background-color:#FFFFFF;width:20%;height:20%;>'+ 
+                        '<span id=likeButton_'+msg_id+'>'+
+                            ' <input onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+' type=image src=like.png style=width:10%; height:10%;>'+
+                        '</span>'+
+                        
+                        '<span id=numLikes_'+msg_id+'> 0 </span> '+
+                    '</span>';
+        
+        var chatbox = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
+        /* like and drag button stuff
+            '<span id=likes_'+msg_id+ /*'style=display:none* / '><br><button onclick=now.serverDragMsg('+msg_id+') id=drag_'+msg_id+ /*'style=display:none* /'>Drag Out</button><button onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+'>Like</button><br><div id=numLikes_'+msg_id+'>#Likes: 0</div> </span>
+       */
+        
+        var thread = $( threadStart + msgStart + tag + like + chatMessageStart + chatMessage + end + end + chatbox + end);
         
         $('#messages'+sentence).append(thread);
         
         $('#chatbox_'+msg_id).keypress(function (event) {   
             if (event.keyCode === 13) {
                 var chatText = $('#chatbox_'+msg_id).val();
-                now.serverAddMsg(msg_id, chatText);
+                var d = new Date();
+                var msgid = (d.getMonth()+d.getFullYear()+d.getTime()).toString();
+                now.serverAddMsg(msgid, msg_id, chatText);
             }
         });
         
         $('#msg_'+msg_id).hover(
             function() {
                 var numLikes = $('#msg_'+msg_id).attr('data-likes_'+msg_id);
-                $('div#numLikes_'+msg_id).text(numLikes);
-                document.getElementById('likes_'+msg_id).style.display = '';
+                $('span#numLikes_'+msg_id).text('  '+numLikes);
+                //document.getElementById('likes_'+msg_id).style.display = '';
                 //$(this).append($('<span><button onclick=now.likeMsg('+msg_id+') id=like_'+msg_id+'>Like</button><br>#Likes: '+numLikes+'</span>'));
             },
             function() {
-                document.getElementById('likes_'+msg_id).style.display = 'none';
+               // document.getElementById('likes_'+msg_id).style.display = 'none';
                 //$(this).find('span').remove();
             }
         );
-        
-        var xpos = (msgNum%7)*100;
+        //xpos:    %num is how many per row && *num is how much space between messages
+        var xpos = (msgNum%6)*150;
         thread.css('left', xpos+'px');
-        //thread.css('top', ypos+'px'); 
-        
+//        var ypos = Math.floor(msgNum/5)*40+20;
+//        thread.css('top', ypos+'px'); 
+//        
 		thread.draggable({
             stop: function(event, ui) {
                 var id = event.target.id;
@@ -336,23 +382,23 @@ now.ready(function () {
 	 
 	};
     
-    now.addMsg = function(msg_id, chatText){
+    now.addMsg = function(msgid, msg_id, chatText){
         //adding message to thread
-        var d = new Date();
-        var msgid = (d.getMonth()+d.getFullYear()+d.getTime()).toString();
+        //var d = new Date();
+        //var msgid = msg_id;//(d.getMonth()+d.getFullYear()+d.getTime()).toString();
         var chatbox = $('#chatbox_'+msg_id);
         var chatMsg = chatText;
-        var msg = '<div class=msg id=msg_'+msgid+' data-likes_'+msgid+'= 0 data-ST = ""><div id=tag_'+msgid+'></div><br><div id=chatMsg_'+msgid+'>' + chatMsg + '</div><span id=likes_'+msgid+' style=display:none><br><button onclick=now.serverDragMsg('+msgid+') id=drag_'+msg_id+' style=display:none>Drag Out</button><button onclick=now.likeMsg('+msgid+') id=like_'+msgid+'>Like</button><br>#Likes: <div id=numLikes_'+msgid+'></div> </span></div>';
+        var msg = '<div class=msg id=msg_'+msgid+' data-likes_'+msgid+'= 0 data-ST = ""><div id=tag_'+msgid+'></div><br><div id=chatMsg_'+msgid+'>' + chatMsg + '</div><span id=likes_'+msgid+/*'style=display:none*/'><br><button onclick=now.serverDragMsg('+msgid+') id=drag_'+msg_id+/*'style=display:none*/'>Drag Out</button><button onclick=now.likeMsg('+msgid+') id=like_'+msgid+'>Like</button><br>#Likes: <div id=numLikes_'+msgid+'></div> </span></div>';
         
         chatbox.before(msg);
         $('#msg_'+msgid).hover(
             function() {
                 var numLikes = $('#msg_'+msgid).attr('data-likes_'+msgid);
                 $('div#numLikes_'+msgid).text(numLikes);
-                document.getElementById('likes_'+msgid).style.display = '';
+              //  document.getElementById('likes_'+msgid).style.display = '';
             },
             function() {
-                document.getElementById('likes_'+msgid).style.display = 'none';
+            //    document.getElementById('likes_'+msgid).style.display = 'none';
             }
         );
         chatbox.val('');

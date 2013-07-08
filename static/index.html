@@ -7,71 +7,61 @@
     <script type="text/javascript" src="nowjs/now.js"></script>
     <script src = "client.js"> </script>
     <link rel="stylesheet" type="text/css" href="index.css">
+    
+    <link type="text/css" rel="stylesheet" href="../jquery-te-1.4.0.css">
+
+<script type="text/javascript" src="../jquery-te-1.4.0.js" charset="utf-8"></script>
 </HEAD>
     <div class="colmask leftmenu">
         <div class="colleft">
             <div class="col1" id="col1">
-                <div class = "messages" id="messages0"> </div>
+                <div id="chat">
+                        <div id="menuSentence" style="width:19%;float:left;padding-right:5px;" align="right">
+                            <button id='nextSentence' onClick="this.disabled=true;"> Next Part</button>
+                            <div id= "usersReady"><br></div> 
+                            <div id="pplReady"></div>
+                        </div>
+        
+                        <div id="sentence" style="background-color:#EEEEEE;width:60%;float:left;padding-left:5px;">
+                            <br>
+                        </div> 
+                    
+                        <br> <br> <br>
+                        <div id="menuTags" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right">
+                            <b>Tags:  </b> <br> <br> <br>
+                            <button id="submitChat">Submit</button>
+                        </div>
+        
+                        <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
+                            <button class="tags" id="grammar">#grammar</button>
+                            <button class="tags" id="logic">#logic</button>
+                            <button class="tags" id="style">#style</button>
+                            <textarea id="chatbox" style="display:none"></textarea>
+                        </div>
+                </div>
+                
+                <div class = "messages" id = "messages">
+                    <div id="messages0"></div>
+                </div>
             </div>
+            
             <div class="col2">
                 <div style="text-align: center"><button id="changeText">Change Text</button>   
                     <textarea rows="10" style="width:100%; display:none;" id="changeTextArea"></textarea>        
-                </div>      
-                <br>
-                <div id="content">
-                        (1) I know what your e-mail in-box looks like, and it isn&#x2019;t pretty: a babble of come-ons and lies from hucksters and con artists. 
-            (2) To find your real e-mail, you must wade through the torrent of fraud and obscenity known politely as &#x201c;unsolicited bulk e-mail&#x201d; and colloquially as &#x201c;spam.&#x201d; 
-            (3) In a perverse tribute to the power of the online revolution, we are all suddenly getting the same mail: easy weight loss, get-rich-quick schemes, etc. 
-            (4) The crush of these messages is now numbered in billions per day. 
-            (5) &#x201c;It&#x2019;s becoming a major systems and engineering and network problem,&#x201d; says one e-mail expert. 
-            (6) &#x201c;Spammers are gaining control of the Internet.&#x201d; 
+                    <button id='endSession' onClick="this.disabled=true;"> End Session</button>
                 </div>
+
                 
-                <div id="chat">
-                    <center>
-                        What's your feedback? <br> <br> 
-                        Tag Your Comment: <br>
-                        <form>
-                            <input type="checkbox" id="grammar" name="grammar" value=" G ">Grammar
-                            <input type="checkbox" id="logic" name="logic" value=" L ">Logic
-                            <input type="checkbox" id="style" name="style" value=" S ">Style
-                        </form>
-                        <button id="selectedText">Attach Selected Text</button> 
-                        <textarea rows="4" style="width:100%" id="chatbox"></textarea>
-                        <br> 
-                        <br>
-                        <button id='nextSentence' onClick="this.disabled=true;"> Next Sentence Please!</button> <br>
-                        <div id= "usersReady"><br></div> 
-                        <div id="pplReady"></div>
-                        <button id='endSession' onClick="this.disabled=true;"> End Session</button> <br>
-                        <div id= "usersReadyES"><br></div> 
-                        <div id="pplReadyES"></div>
-                       <!--  <button onclick="submitChat()"> SUBMIT </button> -->
-                    </center>
+                <br>
+                <div id="content"> I know what your e-mail in-box looks like, and it isn&#x2019;t pretty: a babble of come-ons and lies from hucksters and con artists. To find your real e-mail, you must wade through the torrent of fraud and obscenity known politely as &#x201c;unsolicited bulk e-mail&#x201d; and colloquially as &#x201c;spam&#x201d;. In a perverse tribute to the power of the online revolution, we are all suddenly getting the same mail: easy weight loss, get-rich-quick schemes, etc. The crush of these messages is now numbered in billions per day. &#x201c;It&#x2019;s becoming a major systems and engineering and network problem,&#x201d; says one e-mail expert. &#x201c;Spammers are gaining control of the Internet.&#x201d; 
                 </div>
+                <br>
+                <div id= "usersReadyES"><br></div> 
+                <div id="pplReadyES"></div>
+                        
+                
             </div>
         </div>
     </div>
 
-  <!--  <FRAMESET cols="25%, 70%, 5%">
-        <div style = "width:25%"><FRAMESET rows="60%, 40%">
-            <FRAME src="contentsFrame1.html" noresize>
-            <FRAME src="contentsFrame2.html" noresize>
-        </FRAMESET> </div>
-        <FRAME src="contentsFrame3.html" noresize>
-        <FRAME src="contentsFrame4.html" noresize>
-    </FRAMESET>	
-    -->
-<!-- <FRAMESET rows="10%, 80%, 10%">
-	<FRAME src="contentsFrameBorder.html" noresize>
-	<FRAMESET cols="25%, 70%, 5%">
-		<div style = "width:25%"><FRAMESET rows="60%, 40%">
-	        <FRAME src="contentsFrame1.html" noresize>
-	        <FRAME src="contentsFrame2.html" noresize>
-	    </FRAMESET> </div>
-        <div style = "width:75%"><FRAME src="contentsFrame3.html" noresize></div>
-        <FRAME src="contentsFrame4.html" noresize> 
-    </FRAMESET>	
-	<FRAME src="contentsFrameBorder.html" noresize>
-</FRAMESET>	-->
 </HTML>

@@ -54,7 +54,7 @@
     }
     
     nowjs.on("connect", function(){
-        users+=1;
+        users +=1;
         return this.now.loadMessages(messages, sentence);
     });
     
@@ -63,7 +63,7 @@
     });
     
     everyone.now.nextSentenceServer = function() {
-        return everyone.now.nextSentence(users, numReady);
+        return this.now.nextSentence(users, numReady);
     }
     
     everyone.now.endSessionServer = function() {
@@ -106,11 +106,11 @@
         return everyone.now.updateLikes(msgID);
     }
     
-    everyone.now.serverAddMsg = function(msgID, chatText) {
+    everyone.now.serverAddMsg = function(msgID, msg_id, chatText) {
         //msgID is the number id of the message that has been liked
-        var parameter = ["am", msgID, chatText];
+        var parameter = ["am", msgID, msg_id, chatText];
         messages.push(parameter);
-        return everyone.now.addMsg(msgID, chatText);
+        return everyone.now.addMsg(msgID, msg_id, chatText);
     }
     
     everyone.now.serverDragMsg = function(msgID) {
