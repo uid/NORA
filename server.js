@@ -27,6 +27,7 @@
     var messages = new Array();
     var maxYPos = 0;
     var maxSentences;
+    var likes = {};
     
     everyone.now.serverNumMaxSentences = function(numSentences) {
        maxSentences = numSentences;
@@ -34,28 +35,33 @@
     
 	everyone.now.serverGotNewChat = function(chatMessage, tag, msgID, selectedText)    {
         msgNum += 1;
+        likes[msgID] = 0;
+        console.log("pushed gnc");
         var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgNum];
         messages.push(parameter);
 		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgNum);
 	};
 
 	everyone.now.serverMoveMsg = function(id, pos) {
-        var parameter = ["mm", id, pos];
+        //id includes '#'
+        var parameter = ["mm", id, pos, msgNum];
         messages.push(parameter);
         var newY = pos.top;
+        console.log("pushed mm");
         if (newY > maxYPos) maxYPos = newY;
-		return everyone.now.moveMsg(id, pos);
+		return everyone.now.moveMsg(id, pos, msgNum);
 	}
     
     everyone.now.serverMergeThread = function (threadSource, threadTarget) {
         var parameter = ["mt", threadSource, threadTarget];
+                console.log("pushed mt");
         messages.push(parameter);
         return everyone.now.mergeThread(threadSource, threadTarget);
     }
     
     nowjs.on("connect", function(){
         users +=1;
-        return this.now.loadMessages(messages, sentence);
+        return this.now.loadMessages(messages, sentence, likes);
     });
     
     everyone.on("disconnect", function(){
@@ -95,6 +101,7 @@
         sentence+=1;
         height = maxYPos;
         maxYPos = 0;
+        console.log("pushed nmd");
         messages.push(["nmd", sentence, height])
         return everyone.now.updateSentence(sentence, height, maxSentences);
     }
@@ -102,22 +109,40 @@
     everyone.now.serverLikeMsg = function(msgID) {
         //msgID is the number id of the message that has been liked
         var parameter = ["ul", msgID];
+        likes[msgID] = likes[msgID] + 1;
+        console.log("pushed like msg");
         messages.push(parameter);
         return everyone.now.updateLikes(msgID);
+    }
+    
+    everyone.now.serverDislikeMsg = function(msgID) {
+        //msgID is the number id of the message that has been liked
+        var parameter = ["ud", msgID];
+        likes[msgID] = likes[msgID] - 1;
+        console.log("pushed dislike msg");
+        messages.push(parameter);
+        return everyone.now.updateDislikes(msgID);
     }
     
     everyone.now.serverAddMsg = function(msgID, msg_id, chatText) {
         //msgID is the number id of the message that has been liked
         var parameter = ["am", msgID, msg_id, chatText];
+        console.log("pushed am");
         messages.push(parameter);
         return everyone.now.addMsg(msgID, msg_id, chatText);
     }
     
     everyone.now.serverDragMsg = function(msgID) {
         //msgID is the number id of the message that has been liked
-        var parameter = ["dm", msgID];
+        var d = new Date();
+        var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
+       
+        var parameter = ["dm", msgID, sentence, msgNum, msg_id];
+        
+        console.log("pushed dm");
+
         messages.push(parameter);
-        return everyone.now.dragMsg(msgID);
+        return everyone.now.dragMsg(msgID, sentence, msgNum, msg_id);
     }
     
     everyone.now.serverChangeText = function(text) {
