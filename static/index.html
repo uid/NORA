@@ -10,44 +10,48 @@
     <div class="colmask leftmenu">
         <div class="colleft">
             <div class="col1" id="col1">                
+                <div id="chat">  
+                    <div style="float:left; width:100%;">
+                        <div id="menuSentence" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right" >
+                            <div id="associated" style="color:grey; font-size:xx-small; visibility:hidden">Associated text</div>
+                            <button id=attachButton><img src="select.png" height="18" width="12"> </button>
+                            <div id="attachText" style="color:grey; font-size:xx-small; visbility:hidden">Select text first</div>
+                        </div>
+                        <div id="sentence" data-selected="" data-sentence=0 style="font-size:small; width:60%;float:left;padding-left:5px;padding-top:10px">
+                            <br>
+                        </div>
+                    </div>
+<!--
+                        <div>
+                            <div id="sentence" style="width:70%;padding-left:20%;">
+                                <br>
+                            </div>
+                        </div>
+-->
+                        <div style="float:left; width:100%;">
+                            <div id="menuTags" style="width:19%;float:left;padding-right:5px;padding-top:10px;" align="right" >
+                                <div style="padding-bottom:5px"><b>Tags:  </b> </div>
+                                <br>
+                                <button id="submitChat" style='padding:5px' disabled>Submit</button>
+                                <div id="tagSelection" style="width:80px; padding-right:3px; color:grey; font-size:xx-small;">You must select a tag before submitting</div>
+                            </div>
+            
+                            <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
+                                <button class="tags" id="subject" style="font-size:xx-small;" data-description="Are there complete, original, and well-developed ideas?">#content</button>
+                                <button class="tags" id="diction" style="font-size:xx-small;" data-description="Is the word choice compelling, appropriate, and engaging for the audience and topic? ">#diction</button>
+                                <button class="tags" id="mechanics" style="font-size:xx-small;" data-description="Is there appropriate stanza breaks, punctuation, form, etc.?">#mechanics</button>                                               <button class="tags" id="devices" style="font-size:xx-small;" data-description="Uses literary devices (similes, metaphors, etc.) correctly and originally?">#devices</button>
+                                <div id="description" style="padding:2px; padding-bottom:10px; color:grey; font-size:xx-small; visibility:hidden;">description</div>
+                                <textarea id="chatbox" style="border:2px solid #000; border-radius: 10px; height:20%;width:100%"></textarea>
+                            </div>
+                        </div>
+                </div>
                 <div class = "messages" id = "messages">
-                    <div class="msgs" id="messages0" style="height:420px">
-                        <div id="msgCol0_0" style="width:20%;float:left;"></div> 
-                        <div id="msgCol1_0" style="width:20%;float:left;"></div> 
-                        <div id="msgCol2_0" style="width:20%;float:left;"></div> 
-                        <div id="msgCol3_0" style="width:20%;float:left;"></div>               
-                        <div id="msgCol4_0" style="width:20%;float:left;"></div> 
-                                     
+                    <div class="msgs" id="messages0" style="height:150px">
                     </div>
                 </div>
-                <div id="chat">
-                        <div id="menuSentence" style="width:19%;float:left;padding-right:5px;" align="right">
-                            <button id='nextSentence' onClick="this.disabled=true;"> Next Part</button>
-                        </div>
-        
-                        <div id="sentence" style="background-color:#EEEEEE;width:60%;float:left;padding-left:5px;">
-                            <br>
-                        </div> 
-                    
-                        <div id="correctSpacing"><br> <br> <br> <br> <br></div>
-                        <div id="menuTags" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right">
-                            <b>Tags:  </b> <br> <br> <br>
-                            <button id="submitChat">Submit</button> <br>
-<!--                            <button id="submitChat">Select Text</button>-->
-                        </div>
-        
-                        <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
-                            <button class="tags" id="viewpoint" style="font-size:xx-small;">#viewpoint</button>
-                            <button class="tags" id="mechanics" style="font-size:xx-small;">#mechanics</button>
-                            <button class="tags" id="devices" style="font-size:xx-small;">#devices</button>
-                            <button class="tags" id="imagery" style="font-size:xx-small;">#imagery</button>
-                            <button class="tags" id="diction" style="font-size:xx-small;">#diction</button>
-                            <button class="tags" id="subject" style="font-size:xx-small;">#content</button>
-                            <br> 
-                            <div id="description" style="padding:2px; color:grey; font-size:xx-small;">description</div>
-                            <br>
-                            <textarea id="chatbox" style="border:2px solid #000; border-radius: 10px; height:20%;width:100%"></textarea>
-                        </div>
+                <div id="nextPart" align="right">
+                    <button class ="tags" id='nextSentence' onClick="this.disabled=true;" data-description=""> <b>I am ready to move on to the next part. </b> </button>
+                    <br> <div style="padding-right:5px"> Fraction of users ready: <span id="pplReady"></span></div>
                 </div>
             </div>
             
@@ -80,9 +84,6 @@
                     And wavers not when alteration crooks. <br>
                     Unrequited, my love has latent wealth, <br>
                     Denied by others; it only fuels itself. <br>
-                </div>
-                <div id="nav">
-                    <button id="nav_0"> > </button>
                 </div>
                 
 <!--                    I know what your e-mail in-box looks like, and it isn&#x2019;t pretty: a babble of come-ons and lies from hucksters and con artists. To find your real e-mail, you must wade through the torrent of fraud and obscenity known politely as &#x201c;unsolicited bulk e-mail&#x201d; and colloquially as &#x201c;spam&#x201d;. In a perverse tribute to the power of the online revolution, we are all suddenly getting the same mail: easy weight loss, get-rich-quick schemes, etc. The crush of these messages is now numbered in billions per day. &#x201c;It&#x2019;s becoming a major systems and engineering and network problem,&#x201d; says one e-mail expert. &#x201c;Spammers are gaining control of the Internet.&#x201d; -->

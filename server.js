@@ -28,6 +28,12 @@
     var maxYPos = 0;
     var maxSentences;
     var likes = {};
+    var heights = {};
+    var scroll = {};
+    var msgs = {};
+    msgs[sentence] = 0;
+    heights[sentence] = 0;
+    scroll[sentence] = 0;
     
     everyone.now.serverNumMaxSentences = function(numSentences) {
        maxSentences = numSentences;
@@ -36,10 +42,11 @@
 	everyone.now.serverGotNewChat = function(chatMessage, tag, msgID, selectedText)    {
         msgNum += 1;
         likes[msgID] = 0;
+        msgs[sentence] = msgs[sentence] + 1;
         console.log("pushed gnc");
-        var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgNum];
+        var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgs[sentence]];
         messages.push(parameter);
-		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgNum);
+		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgs[sentence]);
 	};
 
 	everyone.now.serverMoveMsg = function(id, pos) {
@@ -99,11 +106,14 @@
     everyone.now.updateServer = function() {
         numReady = 0;
         sentence+=1;
-        height = maxYPos;
+        msgs[sentence] = 0;
+        heights[sentence] = 0;
+        scroll[sentence] = scroll[sentence - 1] + heights[sentence - 1];
         maxYPos = 0;
         console.log("pushed nmd");
-        messages.push(["nmd", sentence, height])
-        return everyone.now.updateSentence(sentence, height, maxSentences);
+        console.log("section "+(sentence-1)+" height "+heights[sentence-1]+" last scroll "+scroll[sentence-1]+" next scroll "+scroll[sentence]);
+        messages.push(["nmd", sentence, heights[sentence-1], scroll[sentence-1]])
+        return everyone.now.updateSentence(sentence, heights[sentence-1], maxSentences, scroll[sentence-1]);
     }
 
     everyone.now.serverLikeMsg = function(msgID) {
@@ -132,17 +142,17 @@
         return everyone.now.addMsg(msgID, msg_id, chatText);
     }
     
-    everyone.now.serverDragMsg = function(msgID) {
+    everyone.now.serverDragMsg = function(msgID, msgnumber) {
         //msgID is the number id of the message that has been liked
         var d = new Date();
-        var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
-       
-        var parameter = ["dm", msgID, sentence, msgNum, msg_id];
+        var msg_id = parseInt((d.getMonth()+d.getFullYear()+d.getTime()).toString());
+        msgID = parseInt(msgID);
+        var parameter = ["dm", msgID, sentence, msgnumber, msg_id];
         
         console.log("pushed dm");
 
         messages.push(parameter);
-        return everyone.now.dragMsg(msgID, sentence, msgNum, msg_id);
+        return everyone.now.dragMsg(msgID, sentence, msgnumber, msg_id);
     }
     
     everyone.now.serverChangeText = function(text) {
@@ -156,5 +166,14 @@
         var parameter = ["ls", maxSentences];
         messages.push(parameter);
         everyone.now.lastSentence(maxSentences);
+    }
+    
+    everyone.now.newMessageServer = function() {
+        this.now.newMessage(sentence);
+    }
+    
+    everyone.now.serverUpdateHeight = function(sentence, height) {
+        if (height > heights[sentence]) heights[sentence] = height;
+        console.log("section "+sentence+" height "+height);
     }
 }).call(this);

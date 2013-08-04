@@ -11,11 +11,11 @@
 .msgs {
     border-top:thick double #000000;
     padding-top:10px;
-    
+    position:relative;
 }
 
 .messages {
-    height:60%;
+    height:65%;
     overflow:scroll;
 }
 
@@ -42,7 +42,8 @@
 }
 
 .thread {
-	width: 85%;
+	width: 15%;
+    position:absolute;
 }
 
 .selectedText {
@@ -69,10 +70,16 @@ p {
 }
 
 #chat {
-	border-top:1px solid #000;
+	border-bottom:1px solid #000;
 	overflow-y:scroll;
-    height: 35%;
+    height: 25%;
 	padding-top:10px;
+}
+
+#nextPart {
+    height: 5%;
+    border-top:1px solid #000;
+    padding-top: 2px;
 }
 
 /* column container */
