@@ -15,7 +15,7 @@
                         <div id="menuSentence" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right" >
                             <div id="associated" style="color:grey; font-size:xx-small; visibility:hidden">Associated text</div>
                             <button id=attachButton><img src="select.png" height="18" width="12"> </button>
-                            <div id="attachText" style="color:grey; font-size:xx-small; visbility:hidden">Select text first</div>
+                            <div id="attachText" style="color:grey; font-size:xx-small; visbility:hidden; display:none;">Select text first</div>
                         </div>
                         <div id="sentence" data-selected="" data-sentence=0 style="font-size:small; width:60%;float:left;padding-left:5px;padding-top:10px">
                             <br>
@@ -33,13 +33,16 @@
                                 <div style="padding-bottom:5px"><b>Tags:  </b> </div>
                                 <br>
                                 <button id="submitChat" style='padding:5px' disabled>Submit</button>
-                                <div id="tagSelection" style="width:80px; padding-right:3px; color:grey; font-size:xx-small;">You must select a tag before submitting</div>
+                                <div id="tagSelection" style="width:80px; padding-right:3px; color:grey; font-size:xx-small;">Select at least one tag before submitting</div>
                             </div>
             
                             <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
                                 <button class="tags" id="subject" style="font-size:xx-small;" data-description="Are there complete, original, and well-developed ideas?">#content</button>
                                 <button class="tags" id="diction" style="font-size:xx-small;" data-description="Is the word choice compelling, appropriate, and engaging for the audience and topic? ">#diction</button>
-                                <button class="tags" id="mechanics" style="font-size:xx-small;" data-description="Is there appropriate stanza breaks, punctuation, form, etc.?">#mechanics</button>                                               <button class="tags" id="devices" style="font-size:xx-small;" data-description="Uses literary devices (similes, metaphors, etc.) correctly and originally?">#devices</button>
+                                <button class="tags" id="mechanics" style="font-size:xx-small;" data-description="Is there appropriate stanza breaks, punctuation, form, etc.?">#mechanics</button>                                               
+                                <button class="tags" id="devices" style="font-size:xx-small;" data-description="Uses literary devices (similes, metaphors, etc.) correctly and originally?">#devices</button>
+                                <button class="tags" id="positive" style="font-size:xx-small;" data-description="Positive feedback discusses what was done right or done well.">#positive</button>
+                                <button class="tags" id="constructive" style="font-size:xx-small;" data-description="Constructive feedback discusses improvements and corrections.">#constructive</button>
                                 <div id="description" style="padding:2px; padding-bottom:10px; color:grey; font-size:xx-small; visibility:hidden;">description</div>
                                 <textarea id="chatbox" style="border:2px solid #000; border-radius: 10px; height:20%;width:100%"></textarea>
                             </div>

@@ -3,8 +3,8 @@ now.loadMessages = function(messages, sentence, likes) {
     for(var i =0; i<messages.length; i++) {
         var parameters = messages[i];
         if (parameters[0] == "gnc") {
-            //now.gotNewChat(chatMessage, tag, msg_id, sentence, selectedText, msgNum, likes)
-            now.gotNewChat(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6], likes[parameters[3]]);
+            //now.gotNewChat(chatMessage, tag, msg_id, sentence, selectedText, msgNum, likes, positive, constructive)
+            now.gotNewChat(parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6], likes[parameters[3]], parameters[7], parameters[8]);
         }
         else if (parameters[0] == "mm") {
             //now.moveMsg(id, pos, msgNum)
@@ -192,19 +192,26 @@ now.ready(function () {
     }
     
     $('.tags').click(function() {
-        if($(this).css("background-color")=="rgb(220, 220, 220)") {
-            //not blue 
-            $(this).css("background-color", "rgb(60, 200, 250)");
-            $('#tagSelection').css("visibility", "hidden");
-            document.getElementById('submitChat').disabled = false;
+        var elem = this.id;
+        var background = "";
+        if(elem == "positive") {
+            background = "#99FF99";
+            
+        }
+        else if (elem == "constructive") {
+            background = "#FFCC99";
         }
         else {
-            //change to not blue
-            $(this).css("background-color", "rgb(220, 220, 220)");
-            //would put here if i was going to check if at least one of the tags was checked to redisable submit button
+            background = "rgb(60, 200, 250)";
+        }
+        if($('#'+elem).hasClass('selected')) {
+            if(elem == "positive") {document.getElementById('constructive').disabled = false;}
+            else if (elem == "constructive") {document.getElementById('positive').disabled = false;} 
+            $('#'+elem).removeClass('selected');
+            $('#'+elem).css("background", "rgb(220,220,220)");
             var tag = "";
             $('.tags').each(function() {
-                if($(this).css("background-color")=="rgb(60, 200, 250)") {
+                if($(this).hasClass("selected")) {
                     var elem = this.id;
                     var textTag = $('#'+elem).text();
                     tag = tag + textTag+ " ";
@@ -214,6 +221,14 @@ now.ready(function () {
                 document.getElementById('submitChat').disabled = true;
                 $('#tagSelection').css("visibility", "visible");
             }
+        }
+        else {
+            if(elem == "positive") {document.getElementById('constructive').disabled = true;}
+            else if (elem == "constructive") {document.getElementById('positive').disabled = true;} 
+            $('#'+elem).addClass('selected');
+            $('#'+elem).css("background", background);
+            $('#tagSelection').css("visibility", "hidden");
+            document.getElementById('submitChat').disabled = false;
         }
     });
     
@@ -229,21 +244,31 @@ now.ready(function () {
     
     now.newMessage = function(sentence) {
         var tag = "";
+        var positive = false;
+        var constructive = false;
         $('.tags').each(function() {
-            if($(this).css("background-color")=="rgb(60, 200, 250)") {
+            if($(this).hasClass('selected')) {
                 $(this).css("background-color", "rgb(220, 220, 220)");
-                var elem = this.id;
-                var textTag = $('#'+elem).text();
-                tag = tag + textTag+ " ";
+                $(this).removeClass('selected');
+                var elem = this.id;    
+                if (elem == "positive") {
+                    positive = true;
+                }
+                else if (elem == "constructive") {
+                    constructive = true;
+                }
+                else {
+                    var textTag = $('#'+elem).text();
+                    tag = tag + textTag+ " ";
+                }
             }
         });
-        if(tag != "") {
+        if(tag != "" || positive == true || constructive == true) {
             var selectedText = document.getElementById('sentence').getAttribute('data-selected');
             document.getElementById('sentence').setAttribute('data-selected',"");
-            console.log("selected "+selectedText);
             var d = new Date();
             var msg_id = (d.getMonth()+d.getFullYear()+d.getTime()).toString()
-            now.serverGotNewChat($('#chatbox').val(), tag, msg_id, selectedText);
+            now.serverGotNewChat($('#chatbox').val(), tag, msg_id, selectedText, positive, constructive);
             $('#chatbox').val('');
             $('#tagSelection').css("visibility", "hidden");
         }
@@ -252,6 +277,8 @@ now.ready(function () {
         }
         document.getElementById('submitChat').disabled = true;
         $('#sentence').html($('#sent_'+sentence).html());
+        document.getElementById('constructive').disabled = false; 
+        document.getElementById('positive').disabled = false;
     };
 
 	now.moveMsg = function(id, pos, msgNum) {
@@ -303,14 +330,27 @@ now.ready(function () {
     
     $(".tags").hover(function() {
             var elem = this.id;
+            var background = "";
+            if(elem == "positive") {
+                background = "#99FF99";
+            }
+            else if (elem == "constructive") {
+                background = "#FFCC99";
+            }
+            else {
+                background = "rgb(60, 200, 250)";
+            }
+            $('#'+elem).css("border-color", background);
+        
             var descrip = $('#'+elem).attr('data-description');
             if (descrip != "") {
                 $('#description').text(descrip);
                 $('#description').css("visibility", "visible");
             }
-            
         }, 
         function() {
+            var elem = this.id;
+            $('#'+elem).css("border-color", "");
             $('#description').css("visibility", "hidden");
 	});
     
@@ -339,9 +379,9 @@ now.ready(function () {
         for (var i in newlines) {
             selectedText = selectedText+newlines[i]+'<br> ';
         }
-        
-        if (selectedText == "") {
-            $('#attachText').css("visibility", "visible");
+        if (selectedText == "<br> ") {
+            $('#attachText').css("display", "");
+            $('#attachText').css("visibility", "visible");   
         }
         else {
             $('#attachText').css("visibility", "hidden");
@@ -349,13 +389,20 @@ now.ready(function () {
         }
     });
     
-	now.gotNewChat = function(chatMessage, tag, msg_id, sentence, selectedText, msgNum, numLikes) {
+	now.gotNewChat = function(chatMessage, tag, msg_id, sentence, selectedText, msgNum, numLikes, positive, constructive) {
+        var background = "#F0FFFF";
+        if(positive) {
+            background  = "#99FF99";
+        }
+        if (constructive) {
+            background = "#FFCC99";
+        }
         now.serverUpdateHeight(sentence, (Math.floor(msgNum/5)+1)*130);
         if (numLikes == undefined) numLikes =0;
         var texty = escape(String(selectedText));
         var threadStart = '<div class=thread id=t_'+msg_id+' data-size=1 data-sentence='+sentence+'>'
         var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+'>'
-        var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" >';
+        var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" style="background: '+background+'">';
 // onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>';
         var end = '</div>';
         var tag = '<span id=tag_'+msg_id+' style="font-size:x-small;">'+ tag + '</span>';
@@ -364,8 +411,8 @@ now.ready(function () {
         var drag = '<span id=dragButton_'+msg_id+' style="display:none; position:absolute; right:2">'+
                         ' <input onclick=now.serverDragMsg('+intMsg+','+msgNum+') id=drag_'+msg_id+' type=image src=drag.png style=width:15px;>'+
                     '</span>';
-        var tagsnlike = '<div id=tagsnlike style= "background-color:#F0FFFF; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
-                   '<span style=background-color:#F0FFFF;width:20%;height:20%;>'+
+        var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+                   '<span style=background-color:'+background+';width:20%;height:20%;>'+
                         '<span id=likeButton_'+msg_id+'>'+
                                             //this.disabled=true;
                                 '<button class=plusOne id=plusOne_'+msg_id+' onClick="now.likeMsg('+msg_id+');" >' +
@@ -468,7 +515,6 @@ now.ready(function () {
         var sentence = document.getElementById(threadTarget).getAttribute('data-sentence');
         now.serverUpdateHeight(sentence, newSize*130);
         var tChat = $('#chatbox_'+idS);        
-    //    console.log('after passing '+ threadSource +' ts & tt '+ threadTarget);
         var msgs = $('#'+ threadSource + ' .msgntags');
         $('#'+threadTarget).prepend(msgs);
         $('#'+threadSource).remove();

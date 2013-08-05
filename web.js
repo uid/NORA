@@ -31,7 +31,7 @@
     var heights = {};
     var scroll = {};
     var msgs = {};
-    msgs[sentence] = 0;
+    msgs[sentence] = 0; //num of messages for this section
     heights[sentence] = 0;
     scroll[sentence] = 0;
     
@@ -39,14 +39,14 @@
        maxSentences = numSentences;
     }
     
-	everyone.now.serverGotNewChat = function(chatMessage, tag, msgID, selectedText)    {
+	everyone.now.serverGotNewChat = function(chatMessage, tag, msgID, selectedText, positive, constructive)    {
         msgNum += 1;
         likes[msgID] = 0;
         msgs[sentence] = msgs[sentence] + 1;
         console.log("pushed gnc");
-        var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgs[sentence]];
+        var parameter = ["gnc", chatMessage, tag, msgID, sentence, selectedText, msgs[sentence], positive, constructive];
         messages.push(parameter);
-		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgs[sentence]);
+		return everyone.now.gotNewChat(chatMessage, tag, msgID, sentence, selectedText, msgs[sentence], likes[msgID], positive, constructive);
 	};
 
 	everyone.now.serverMoveMsg = function(id, pos) {
@@ -61,7 +61,7 @@
     
     everyone.now.serverMergeThread = function (threadSource, threadTarget) {
         var parameter = ["mt", threadSource, threadTarget];
-                console.log("pushed mt");
+        console.log("pushed mt");
         messages.push(parameter);
         return everyone.now.mergeThread(threadSource, threadTarget);
     }
@@ -111,7 +111,7 @@
         scroll[sentence] = scroll[sentence - 1] + heights[sentence - 1];
         maxYPos = 0;
         console.log("pushed nmd");
-        console.log("section "+(sentence-1)+" height "+heights[sentence-1]+" last scroll "+scroll[sentence-1]+" next scroll "+scroll[sentence]);
+//        console.log("section "+(sentence-1)+" height "+heights[sentence-1]+" last scroll "+scroll[sentence-1]+" next scroll "+scroll[sentence]);
         messages.push(["nmd", sentence, heights[sentence-1], scroll[sentence-1]])
         return everyone.now.updateSentence(sentence, heights[sentence-1], maxSentences, scroll[sentence-1]);
     }
@@ -174,6 +174,6 @@
     
     everyone.now.serverUpdateHeight = function(sentence, height) {
         if (height > heights[sentence]) heights[sentence] = height;
-        console.log("section "+sentence+" height "+height);
+//        console.log("section "+sentence+" height "+height);
     }
 }).call(this);
