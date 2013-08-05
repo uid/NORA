@@ -1,14 +1,10 @@
 {
-  "name": "chat-er",
+  "name": "nora",
   "version": "0.0.1",
-  "private": true,
-  "scripts": {
-  "start": "node app"
- },
-
   "dependencies": {
-    "express": "2.5.11", 
-    "socket.io": "0.9.13"
+    "express": "3.2.6", 
+    "socket.io": "0.9.16"
+	"now": "0.8.1"
   },
     "engines": {
      "node": "0.10.x",
