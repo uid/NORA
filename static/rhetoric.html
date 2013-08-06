@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+    <TITLE>NORA</TITLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="nowjs/now.js"></script>
+    <script src = "client.js"> </script>
+</HEAD>
+    <div class="colmask leftmenu">
+        <div class="colleft">
+            <div class="col1" id="col1">                
+                <div id="chat">  
+                    <div style="float:left; width:100%;">
+                        <div id="menuSentence" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right" >
+                            <div id="associated" style="color:grey; font-size:xx-small; visibility:hidden">Associated text</div>
+                            <button id=attachButton><img src="select.png" height="18" width="12"> </button>
+                            <div id="attachText" style="color:grey; font-size:xx-small; visbility:hidden; display:none;">Select text first</div>
+                        </div>
+                        <div id="sentence" data-selected="" data-sentence=0 style="font-size:small; width:60%;float:left;padding-left:5px;padding-top:10px">
+                            <br>
+                        </div>
+                    </div>
+<!--
+                        <div>
+                            <div id="sentence" style="width:70%;padding-left:20%;">
+                                <br>
+                            </div>
+                        </div>
+-->
+                        <div style="float:left; width:100%;">
+                            <div id="menuTags" style="width:19%;float:left;padding-right:5px;padding-top:10px;" align="right" >
+                                <div style="padding-bottom:5px"><b>Tags:  </b> </div>
+                                <br>
+                                <button id="submitChat" style='padding:5px' disabled>Submit</button>
+                                <div id="tagSelection" style="width:80px; padding-right:3px; color:grey; font-size:xx-small;">Select at least one tag before submitting</div>
+                            </div>
+            
+                            <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
+<!--******************************** start tags section ******************************************-->
+                                <button class="tags" id="thesis" style="font-size:xx-small;" data-description="An arguable thesis? Is the thesis a solution to the problem of interpretation introduced?">#thesis</button>
+                                <button class="tags" id="evidence" style="font-size:xx-small;" data-description="Vivid quotations that are clearly introduced (who, where, when)? Helps illuminate rhetorical features of theory?">#evidence</button>
+                                <button class="tags" id="analysis" style="font-size:xx-small;" data-description="Explains quotations? Makes connections between evidence and theory? Big picture?">#analysis</button>
+                                <button class="tags" id="development" style="font-size:xx-small;" data-description="Uses theory's conceptual terms to develop nuanced, arguable claims?">#development</button>
+                                <button class="tags" id="logic" style="font-size:xx-small;" data-description="Claims logically follow one another? Clear transitions?">#logic</button>
+                                <button class="tags" id="style" style="font-size:xx-small;" data-description="Uses precise, vivid nouns and active verbs? Variety of sentence structure?">#style</button>
+                                <button class="tags" id="positive" style="font-size:xx-small;" data-description="Positive feedback discusses what was done right or done well.">#positive</button>
+                                <button class="tags" id="constructive" style="font-size:xx-small;" data-description="Constructive feedback discusses improvements and corrections.">#constructive</button>
+                                
+                                
+<!--******************************** end tags section *******************************************-->
+                                <div id="description" style="padding:2px; padding-bottom:10px; color:grey; font-size:xx-small; visibility:hidden;">description</div>
+                                <textarea id="chatbox" style="border:2px solid #000; border-radius: 10px; height:20%;width:100%"></textarea>
+                            </div>
+                        </div>
+                </div>
+                
+                <div class='toast' id="toast" style='display:none'></div>
+                <div class = "messages" id = "messages">
+                    <div class="msgs" id="messages0" style="height:150px">
+                    </div>
+                </div>
+                <div id="nextPart" align="right">
+                    <button id='nextSentence' onClick="this.disabled=true;"> <b>I am ready to move on to the next part. </b> </button>
+                    <br> <div id="usersReady" style="padding-right:5px; display:none"> <span id="pplReady"></span> out of <span id="numUsers"></span> users are ready.</div>
+                </div>
+            </div>
+            
+            <div class="col2">
+                <br>
+                
+                <div id="content" style="overflow:scroll;"> 
+                    During the 2nd Presidential debate, a town hall debate at Hofstra University between President Barack Obama and Governor Mitt Romney, the moderator Candy Crowley asked each candidate about the government’s role in energy, specifically addressing gas prices, through the Energy Department. Looking at both arguments through Stasis Theory, I felt that this is one of the segments where Romney presented a more effective argument. <br> <br>
+
+            Jeanne Fahnestock and Marie Secor’s Stasis Theory states that there are five major questions about a topic: questions of fact, questions of definition, questions of value, questions of cause, and questions of action. Obama led off by presenting a fact, saying that oil production and gas production have reached some of the highest levels in years. The value stasis is already addressed and almost assumed by the audience at this point, and that is that it is important that America becomes energy independent. Immediately after this, however, he skips straight to the action stasis and begins laying out what we need to do over the next four years. He speaks about becoming more efficient with our energy and looking for new sources of clean energy, like wind and solar energy. <br> <br>
+
+            When it was Romney’s turn to speak he was able to attack Obama on the cause stasis, which Obama failed to address. Romney calls out Obama by saying that the cause of the increase in production has not been due to federal efforts but instead due to increased efforts by private companies. He backs this with a new fact that “oil production is down 14 percent this year on federal land, and gas production is down 9 percent”. It in fact has decreased, therefore, as a result of federal efforts under Obama’s administration. He then addresses the cause stases for this new fact that he presents. He says that the president cut licenses and permits for drilling on federal lands in half. This seems to be effective because it actually agrees with the fact that President Obama presents, except it makes a clear distinction for a general cause that is never defined. <br> <br>
+
+            Governor Romney then continues to speak about the current problems regarding the government being difficult on companies in coal, oil and gas production. He then briefly addresses the action stasis by presenting what he believes must be done, which is get America to be more energy-independent. He says he will accomplish this by allowing more drilling, and giving out more licenses and permits. He does also suggest that this will lead to an increase in jobs. While a job increase does not directly assist his argument about energy, it does assist his previous argument about lowering the unemployment rate in America. <br> <br>
+
+            I do believe this is where Romney could have been more effective though in his argument. He should have been more specific in his action stasis, perhaps suggesting an estimate of both permits and the projected increase in production under his policies. Obama’s argument was hurt not only by his inability to address the cause stasis, but also by his choice of fact, through which Romney is able to attack him. He presents a fact, which he attempts to loosely correlate with efforts by his administration, which Romney clarifies had actually took efforts in favor of the contrary.  <br> <br>
+                </div>       
+                <br>
+                <div id= "usersReadyES"><br></div> 
+                <div id="pplReadyES"></div>
+                        
+                
+            </div>
+        </div>
+    </div>
+
+</HTML>

@@ -27,8 +27,8 @@ now.loadMessages = function(messages, sentence, likes) {
             now.addMsg(parameters[1], parameters[2], parameters[3]);
         }
         else if (parameters[0] == "dm") {
-            //now.dragMsg(msgID, sentence, msgNum, msg_id);
-            now.dragMsg(parameters[1],  parameters[2], parameters[3], parameters[4]);
+            //now.dragMsg(msgID, sentence, msgNum, msg_id, numLikes,  positive, constructive);
+            now.dragMsg(parameters[1],  parameters[2], parameters[3], parameters[4], parameters[5], parameters[6], parameters[7]);
         }
         else if (parameters[0] == "nmd") {
             //now.newMsgDivsentenceNum, height, scroll)
@@ -68,28 +68,42 @@ now.ready(function () {
 
     now.startup = function (sentence, type) {
         var sentences;
-        if(type == "html") sentences = document.getElementById('content').innerHTML.split(". <br>");
+        if(type == "html") sentences = document.getElementById('content').innerHTML.split(".");
         else sentences = $('#content').text().split(".");
         $('#content').empty();
-        var numSentences = 0;
+        var numSentences = 0; //by numSentences, it really means numParts
+        var charLimit = 0;
+        var textSpan = "";
+        var section = 0;
         for (var s in sentences) {
+            sentences[s] =jQuery.trim(sentences[s]) +'. ';
             numSentences += 1;
-            var text = '<span class=grey id=sent_'+s+'>' + sentences[s] + '. <br></span>';
-            var displayNav = "display:none;";
-            if (parseInt(s) < sentence) {
-                displayNav = "display:'';";
+            charLimit = charLimit + sentences[s].length;
+            if (charLimit > 500 || s == sentences.length-1) {
+                charLimit = 0;
+                var text = '<span class=grey id=sent_'+section+'>' + textSpan + ' </span>';
+                var displayNav = "display:none;";
+                if (parseInt(s) < sentence) {
+                    displayNav = "display:'';";
+                }
+                var nav = '<button id=navb_'+section+' data-height=0 onclick=now.navb('+parseInt(section)+') style='+displayNav+'> > </button>';
+//                var nav = '<div id=nav_'+section+' align=right style='+displayNav+'>'+ 
+//                '<button id=navb_'+section+' data-height=0 onclick=now.navb('+parseInt(section)+')> > </button> </div>';
+                var line = text + nav;
+                $('#content').append(line);
+                charLimit = sentences[s].length;
+                textSpan = sentences[s];
+                section += 1;
             }
-            var nav = '<div id=nav_'+s+' align=right style='+displayNav+'>'+ 
-                '<button id=navb_'+s+' data-height=0 onclick=now.navb('+parseInt(s)+')> > </button> </div>';
-            var line = text + nav;
-            if (s == sentences.length-1) break;
-            $('#content').append(line);
+            else {
+                textSpan = textSpan + sentences[s]; 
+            }
         }
         $('#sent_'+sentence).removeClass('grey');
         if(type == "html") $('#sentence').html($('#sent_'+sentence).html());
         else $('#sentence').text($('#sent_'+sentence).text);
-
-        now.serverNumMaxSentences(numSentences);
+//        $('#toast').fadeIn(100).delay(1000).fadeOut(300);
+        now.serverNumMaxSentences(section+1);
     }
 
     $('#endSession').click(function (event) {
@@ -122,10 +136,12 @@ now.ready(function () {
     };
     
     now.nextSentence = function(users, numReady) {
-        $('span#usersReady').text("Users Ready:");
-        $('span#pplReady').text((numReady-1)+"/"+users);
+//        <div id="usersReady" style="padding-right:5px; display:none"> <span id="pplReady"></span> out of <span id="numUsers"></span> users are ready.</div>
+        $('#usersReady').css("display", "");
+        $('span#pplReady').text(numReady);
+        $('span#numUsers').text(users);
         if(numReady >= users) {
-            $('div#pplReady').text("0/"+users);
+            $('#usersReady').css("display", "none");
             now.updateServer();
         }
     }
@@ -139,11 +155,11 @@ now.ready(function () {
         for (var i =0; i<maxSentenceNum; i++) {
             $('#sent_'+i).removeClass('grey');
         }
-        $("#menuSentence").css("display", "none");
-        $("#sentence").css("display", "none");
-        $("#correctSpacing").css("display", "none");
-        $('#chat').css("height", "15%");
-        $('.messages').css("height", "80%");
+//        $("#menuSentence").css("display", "none");
+//        $("#sentence").css("display", "none");
+//        $("#correctSpacing").css("display", "none");
+        $('#chat').css("height", "20%");
+        $('.messages').css("height", "75%");
         var num=maxSentenceNum-1;
         $('#messages'+num).css("height","500px");
         document.getElementById('nextPart').remove();
@@ -155,7 +171,7 @@ now.ready(function () {
     now.updateSentence = function(sentenceNum, height, maxSentenceNum, scroll) {
         $('#sent_'+sentenceNum).removeClass('grey');
         $('#sent_'+(sentenceNum-1)).addClass('grey');
-        { $('#nav_'+(sentenceNum-1)).css("display", '');}
+        $('#navb_'+(sentenceNum-1)).css("display", '');
         document.getElementById("nextSentence").disabled= false;
         $('#sentence').html($('#sent_'+sentenceNum).html());
         document.getElementById('sentence').setAttribute('data-sentence', sentenceNum);
@@ -163,8 +179,13 @@ now.ready(function () {
 //        $('#sentence').text($('#sent_'+sentenceNum).text());
         now.newMsgDiv(sentenceNum, height, scroll);
         $('#nextSentence').css("background-color", "rgb(220, 220, 220)");
+        $('span#usersReady').css("display", "none");
         if (sentenceNum == maxSentenceNum - 1) {
             now.serverLastSentence();
+        }
+        else {
+            $('#toast').text("Next Part");
+            $('#toast').fadeIn(100).delay(1000).fadeOut(300);
         }
     };
     
@@ -174,6 +195,7 @@ now.ready(function () {
     }
     
     now.newMsgDiv = function (sentenceNum, height, scroll) {
+        $('#navb_'+(sentenceNum-1)).css("display", '');
         var s = sentenceNum-1;
         document.getElementById('navb_'+s).setAttribute("data-height", scroll);
         $('#messages'+s).css("height", height);
@@ -311,21 +333,25 @@ now.ready(function () {
         var prevLiked = parseInt($('#msg_'+msgID).attr('data-likes_'+msgID));
         prevLiked -= 1;
         document.getElementById('msg_'+msgID).setAttribute('data-likes_'+msgID, prevLiked);
+        var numLikes = $('#msg_'+msgID).attr('data-likes_'+msgID);
+        $('span#numLikes_'+msgID).text('+ '+numLikes);
     }
     
     now.updateLikes = function(msgID) {
         var prevLiked = parseInt($('#msg_'+msgID).attr('data-likes_'+msgID));
         prevLiked += 1;
         document.getElementById('msg_'+msgID).setAttribute('data-likes_'+msgID, prevLiked);
+        var numLikes = $('#msg_'+msgID).attr('data-likes_'+msgID);
+        $('span#numLikes_'+msgID).text('+ '+numLikes);
     }
     
-    now.dragMsg = function(msgID, sentence, msgNum, msg_id) {
+    now.dragMsg = function(msgID, sentence, msgNum, msg_id, numLikes, positive, constructive) {
         //msgID is already just the number
         var chatMessage = $('#chatMsg_'+msgID).text();
         var tag = $('#tag_'+msgID).text();
         var selectedText = $('#msg_'+msgID).attr('data-ST');
         document.getElementById('mt_'+msgID).remove();
-        now.gotNewChat(chatMessage, tag, msg_id, sentence, selectedText, msgNum);   
+        now.gotNewChat(chatMessage, tag, msg_id, sentence, selectedText, msgNum, numLikes, positive, constructive);   
     }
     
     $(".tags").hover(function() {
@@ -397,19 +423,21 @@ now.ready(function () {
         if (constructive) {
             background = "#FFCC99";
         }
-        now.serverUpdateHeight(sentence, (Math.floor(msgNum/5)+1)*130);
-        if (numLikes == undefined) numLikes =0;
+        var size = (Math.floor(msgNum/5)+1)*130;
+        now.serverUpdateHeight(sentence, size);
+        if (numLikes == undefined || numLikes == null) numLikes =0;
         var texty = escape(String(selectedText));
+        //data-size is how many messages in this thread that's why multiply by 130
         var threadStart = '<div class=thread id=t_'+msg_id+' data-size=1 data-sentence='+sentence+'>'
         var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+'>'
-        var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= 0 data-ST = "'+selectedText+'" style="background: '+background+'">';
+        var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= '+numLikes+' data-ST = "'+selectedText+'" style="background: '+background+'">';
 // onclick=now.selecting(&apos;"'+texty+'"&apos;,'+msg_id+')>';
         var end = '</div>';
         var tag = '<span id=tag_'+msg_id+' style="font-size:x-small;">'+ tag + '</span>';
         var chatMessageStart = '<div id=chatMsg_'+msg_id+'>';
         var intMsg = parseInt(msg_id);
         var drag = '<span id=dragButton_'+msg_id+' style="display:none; position:absolute; right:2">'+
-                        ' <input onclick=now.serverDragMsg('+intMsg+','+msgNum+') id=drag_'+msg_id+' type=image src=drag.png style=width:15px;>'+
+                        ' <input onclick=now.serverDragMsg('+intMsg+','+msgNum+','+positive+','+constructive+') id=drag_'+msg_id+' type=image src=drag.png style=width:15px;>'+
                     '</span>';
         var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
                    '<span style=background-color:'+background+';width:20%;height:20%;>'+
@@ -424,7 +452,7 @@ now.ready(function () {
         
         var chatbox = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
         var thread = $(threadStart + msgntagsStart + msgStart + chatMessageStart + chatMessage + end + end + tagsnlike + end + chatbox + end);
-        var col = msgNum%5;
+        var col = msgNum%5-1;
         var xpos = 10+(Math.floor(parseInt($('#messages0').css('width'))/5)*(col));
         thread.css('left', xpos+'px');
         var hCol = Math.floor(msgNum/5);
@@ -457,21 +485,16 @@ now.ready(function () {
 		thread.draggable({
             stop: function(event, ui) {
                 var id = event.target.id;
-                console.log("position ");
-                console.log($(event.target).position());
-                console.log("offset ");
-                console.log($(event.target).offset());
-                
                 now.serverMoveMsg('#'+id, $(event.target).position());
             }
         });
 		
 	    thread.droppable({
             drop: function(event, ui) {
-                console.log("I "+event.target.id +" was just dropped on by "+ui.draggable.attr('id'));
+//                console.log("I "+event.target.id +" was just dropped on by "+ui.draggable.attr('id'));
                 var threadSource = event.target.id;
                 var threadTarget = ui.draggable.attr('id');
-              //  console.log(threadSource +' ts & tt '+ threadTarget);
+//                console.log(threadSource +' ts & tt '+ threadTarget);
                 now.serverMergeThread(threadSource, threadTarget);
             }
 
@@ -482,23 +505,35 @@ now.ready(function () {
     now.addMsg = function(msgid, msg_id, chatText){
         var msgStart = '<div class=msg id=msg_'+msgid+' data-likes_'+msgid+'= 0 data-ST = "">';
         var end = '</div>';
-        var msgntags = '<div class=msgntags id=mt_'+msgid+'>';
+        var msgntagsStart = '<div class=msgntags id=mt_'+msgid+'>';
         var chatMessageStart = '<div id=chatMsg_'+msgid+'>';
         var likes = '<div id=tagsnlike style= "background-color:#F0FFFF;border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
-            '<span style=background-color:#F0FFFF;width:20%;height:20%;>'+
+                    '<span style=background-color:#F0FFFF;width:20%;height:20%;>'+
                         '<span id=likeButton_'+msgid+'>'+
-                            ' <input onclick=now.likeMsg('+msgid+') id=like_'+msgid+' type=image src=like.png style=width:10%; height:10%;>'+
+                            '<button class=plusOne id=plusOne_'+msgid+' onClick="now.likeMsg('+msgid+');" >' +
+                                    '<span id=numLikes_'+msgid+' style="font-size:x-small;">+ '+0+'</span>' + 
+                                '</button>'+
                         '</span>'+
-                        
-                        '<span id=numLikes_'+msgid+' style="font-size:x-small"> 0 </span> '+
-                    '</span>';
+                    '</span></div>';
         var chatbox = $('#chatbox_'+msg_id);
-        var msg = msgntags+msgStart + chatMessageStart + chatText + end + end + likes +end;
+        var msg = msgntagsStart+msgStart + chatMessageStart + chatText + end + end + likes +end;
+        var thread = "t_"+msg_id;
+        var idT_size = document.getElementById(thread).getAttribute('data-size');
+        console.log("thread size "+idT_size);
+        var size = parseInt(idT_size)+1;
+        console.log("new size "+size);
+        document.getElementById(thread).setAttribute('data-size', size);
+        var sentence = document.getElementById(thread).getAttribute('data-sentence');
+        console.log("sentence "+sentence);
+        var newSize = size * 130;
+        console.log("newSize "+newSize);
+        now.serverUpdateHeight(sentence, newSize);
+       
         chatbox.before(msg);
         $('#msg_'+msgid).hover(
             function() {
                 var numLikes = $('#msg_'+msgid).attr('data-likes_'+msgid);
-                $('span#numLikes_'+msgid).text(' '+numLikes);
+                $('span#numLikes_'+msgid).text('+ '+numLikes);
             },
             function() {
             }
@@ -507,13 +542,16 @@ now.ready(function () {
     };
     
     now.mergeThread = function(threadSource, threadTarget) {
+        var pos = $('#'+threadSource).position();
         var idS = threadSource.substring(2); 
         var idT = threadTarget.substring(2);
         var idS_size = document.getElementById(threadSource).getAttribute('data-size');
         var idT_size = document.getElementById(threadTarget).getAttribute('data-size');
-        var newSize = document.getElementById(threadTarget).setAttribute('data-size', idS_size+idT_size);
+        var size = parseInt(idS_size)+parseInt(idT_size);
+        document.getElementById(threadTarget).setAttribute('data-size', size);
         var sentence = document.getElementById(threadTarget).getAttribute('data-sentence');
-        now.serverUpdateHeight(sentence, newSize*130);
+        var newSize = size * 130;
+        now.serverUpdateHeight(sentence, newSize);
         var tChat = $('#chatbox_'+idS);        
         var msgs = $('#'+ threadSource + ' .msgntags');
         $('#'+threadTarget).prepend(msgs);
@@ -526,7 +564,8 @@ now.ready(function () {
                 $('span#dragButton_'+idNum).css('display', '');
             }
         });
-        //$('#'+threadTarget).attr('id', threadSource);
+        
+        now.serverMoveMsg('#'+threadSource, pos);
     };
     
 }); 

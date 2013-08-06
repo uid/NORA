@@ -48,28 +48,19 @@
                             </div>
                         </div>
                 </div>
+                
+                <div class='toast' id="toast" style='display:none'></div>
                 <div class = "messages" id = "messages">
                     <div class="msgs" id="messages0" style="height:150px">
                     </div>
                 </div>
                 <div id="nextPart" align="right">
-                    <button class ="tags" id='nextSentence' onClick="this.disabled=true;" data-description=""> <b>I am ready to move on to the next part. </b> </button>
-                    <br> <div style="padding-right:5px"> Fraction of users ready: <span id="pplReady"></span></div>
+                    <button id='nextSentence' onClick="this.disabled=true;"> <b>I am ready to move on to the next part. </b> </button>
+                    <br> <div id="usersReady" style="padding-right:5px; display:none"> <span id="pplReady"></span> out of <span id="numUsers"></span> users are ready.</div>
                 </div>
             </div>
             
             <div class="col2">
-                <div style="text-align: center">
-<!--
-                    <button id="changeText">Change Text</button>   
-                    <textarea rows="10" style="width:100%; display:none;" id="changeTextArea"></textarea>        
-                    <button id='endSession' onClick="this.disabled=true;"> End Session</button>
-                    <div id= "usersReady"><br></div> 
-                    <div id="pplReady"></div>
--->
-                </div>
-
-                
                 <br>
                 
                 <div id="content"> 

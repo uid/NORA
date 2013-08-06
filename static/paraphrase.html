@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+    <TITLE>NORA</TITLE>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="nowjs/now.js"></script>
+    <script src = "client.js"> </script>
+</HEAD>
+    <div class="colmask leftmenu">
+        <div class="colleft">
+            <div class="col1" id="col1">                
+                <div id="chat">  
+                    <div style="float:left; width:100%;">
+                        <div id="menuSentence" style="width:19%;float:left;padding-right:5px;padding-top:10px" align="right" >
+                            <div id="associated" style="color:grey; font-size:xx-small; visibility:hidden">Associated text</div>
+                            <button id=attachButton><img src="select.png" height="18" width="12"> </button>
+                            <div id="attachText" style="color:grey; font-size:xx-small; visbility:hidden; display:none;">Select text first</div>
+                        </div>
+                        <div id="sentence" data-selected="" data-sentence=0 style="font-size:small; width:60%;float:left;padding-left:5px;padding-top:10px">
+                            <br>
+                        </div>
+                    </div>
+<!--
+                        <div>
+                            <div id="sentence" style="width:70%;padding-left:20%;">
+                                <br>
+                            </div>
+                        </div>
+-->
+                        <div style="float:left; width:100%;">
+                            <div id="menuTags" style="width:19%;float:left;padding-right:5px;padding-top:10px;" align="right" >
+                                <div style="padding-bottom:5px"><b>Tags:  </b> </div>
+                                <br>
+                                <button id="submitChat" style='padding:5px' disabled>Submit</button>
+                                <div id="tagSelection" style="width:80px; padding-right:3px; color:grey; font-size:xx-small;">Select at least one tag before submitting</div>
+                            </div>
+            
+                            <div id="tags" style="width:60%;float:left;padding-left:5px;padding-top:10px">
+<!--******************************** start tags section ******************************************-->
+                                <button class="tags" id="thesis" style="font-size:xx-small;" data-description="An arguable thesis? Is the thesis a solution to the problem of interpretation introduced?">#thesis</button>
+                                <button class="tags" id="evidence" style="font-size:xx-small;" data-description="Vivid quotations that are clearly introduced (who, where, when)? Helps illuminate rhetorical features of theory?">#evidence</button>
+                                <button class="tags" id="analysis" style="font-size:xx-small;" data-description="Explains quotations? Makes connections between evidence and theory? Big picture?">#analysis</button>
+                                <button class="tags" id="development" style="font-size:xx-small;" data-description="Uses theory's conceptual terms to develop nuanced, arguable claims?">#development</button>
+                                <button class="tags" id="logic" style="font-size:xx-small;" data-description="Claims logically follow one another? Clear transitions?">#logic</button>
+                                <button class="tags" id="style" style="font-size:xx-small;" data-description="Uses precise, vivid nouns and active verbs? Variety of sentence structure?">#style</button>
+                                <button class="tags" id="positive" style="font-size:xx-small;" data-description="Positive feedback discusses what was done right or done well.">#positive</button>
+                                <button class="tags" id="constructive" style="font-size:xx-small;" data-description="Constructive feedback discusses improvements and corrections.">#constructive</button>
+                                
+                                
+<!--******************************** end tags section *******************************************-->
+                                <div id="description" style="padding:2px; padding-bottom:10px; color:grey; font-size:xx-small; visibility:hidden;">description</div>
+                                <textarea id="chatbox" style="border:2px solid #000; border-radius: 10px; height:20%;width:100%"></textarea>
+                            </div>
+                        </div>
+                </div>
+                
+                <div class='toast' id="toast" style='display:none'></div>
+                <div class = "messages" id = "messages">
+                    <div class="msgs" id="messages0" style="height:150px">
+                    </div>
+                </div>
+                <div id="nextPart" align="right">
+                    <button id='nextSentence' onClick="this.disabled=true;"> <b>I am ready to move on to the next part. </b> </button>
+                    <br> <div id="usersReady" style="padding-right:5px; display:none"> <span id="pplReady"></span> out of <span id="numUsers"></span> users are ready.</div>
+                </div>
+            </div>
+            
+            <div class="col2">
+                <br>
+                
+                <div id="content" style="overflow:scroll;"> 
+                    <div id="source">"We must come to see that human progress never rolls in on wheels of inevitability. It comes through the tireless efforts and persistent work of men willing to be coworkers with God, and without this hard work time itself becomes an ally of the forces of social stagnation."</div>
+                    <div id="paraphrase">We need to understand that progress doesn't necessarily come on its own. Human progress arrives when people work with God, and if they don't, time works against them to prevent progress.</div>
+                    <div id="paraphrase">According to Martin Luther King, Jr., time can do two things: if people do God's work, then time will promote progress, but if they don't, time makes things static.</div>
+                    <div id="paraphrase">Martin Luther King Jr. argues that progress is the direct result of human action toward a moral goal, that without this action societal change will not occur, and that we misunderstand progress when we imagine it as a self-propelled force.</div>
+                </div>       
+                <br>
+                <div id= "usersReadyES"><br></div> 
+                <div id="pplReadyES"></div>
+                        
+                
+            </div>
+        </div>
+    </div>
+
+</HTML>

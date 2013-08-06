@@ -142,17 +142,21 @@
         return everyone.now.addMsg(msgID, msg_id, chatText);
     }
     
-    everyone.now.serverDragMsg = function(msgID, msgnumber) {
+    everyone.now.serverDragMsg = function(msgID, msgnumber, positive, constructive) {
         //msgID is the number id of the message that has been liked
+        console.log(likes);
+        console.log("msgID "+msgID);
+        console.log("msgnumber"+msgnumber);
+        console.log("pushed dm");
         var d = new Date();
         var msg_id = parseInt((d.getMonth()+d.getFullYear()+d.getTime()).toString());
+        console.log("msg_id "+msgID);
         msgID = parseInt(msgID);
-        var parameter = ["dm", msgID, sentence, msgnumber, msg_id];
-        
-        console.log("pushed dm");
-
+        var numLikes = likes[msgID];
+        likes[msg_id] = likes[msgID];
+        var parameter = ["dm", msgID, sentence, msgnumber, msg_id, numLikes, positive, constructive];
         messages.push(parameter);
-        return everyone.now.dragMsg(msgID, sentence, msgnumber, msg_id);
+        return everyone.now.dragMsg(msgID, sentence, msgnumber, msg_id, numLikes, positive, constructive);
     }
     
     everyone.now.serverChangeText = function(text) {
@@ -174,6 +178,6 @@
     
     everyone.now.serverUpdateHeight = function(sentence, height) {
         if (height > heights[sentence]) heights[sentence] = height;
-//        console.log("section "+sentence+" height "+height);
+        console.log("section "+sentence+" height "+height);
     }
 }).call(this);
