@@ -11,7 +11,8 @@
 	httpserver = http.createServer(app);
 
 //	httpserver.listen(8080);
-    httpserver.listen(3000);
+//    httpserver.listen(3000);
+    httpserver.listen(3369);
 	nowjs = require('now');
     
 	everyone = nowjs.initialize(httpserver);
