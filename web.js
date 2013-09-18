@@ -269,7 +269,9 @@
                     for(i=0; i<paraphrases.length; i++) {
                         copyParaphrases.push(paraphrases[i]);
                     }
-                    games[gameID] = [{username:[password, usersScoreInGame, userParaphraseInGame, [], [] ]}, {}, copyParaphrases];
+                    games[gameID][0][username] = [password, usersScoreInGame, userParaphraseInGame, [], [] ];
+                    games[gameID][1] = {};
+                    games[gameID][2] =copyParaphrases;
                 }
                 
                 if(gameID.toLowerCase().substring(0,4) == "beta") //in tutorial mode so no extra paraprhases
