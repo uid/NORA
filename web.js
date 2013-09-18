@@ -269,6 +269,7 @@
                     for(i=0; i<paraphrases.length; i++) {
                         copyParaphrases.push(paraphrases[i]);
                     }
+                    games[gameID] = {{},{},{}};
                     games[gameID][0][username] = [password, usersScoreInGame, userParaphraseInGame, [], [] ];
                     games[gameID][1] = {};
                     games[gameID][2] =copyParaphrases;
