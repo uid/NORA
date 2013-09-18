@@ -1,0 +1,78 @@
+#excerptTeacher {
+    width:90%;
+    height:10%;
+    margin-left:5%;
+    padding:5px;
+    margin-bottom:1%;
+    resize: vertical;
+}
+
+#hintsTeacher {
+    width:90%;
+    height:10%;
+    margin-left:5%;
+    padding:5px;
+    margin-bottom:1%;
+    resize: vertical;
+}
+
+#sourceTeacher {
+    margin:1%;
+    width:50%;
+    resize: horizontal;
+}
+
+#inputsTeacher {
+    margin-left:25%;
+    background:#f4f4f4;
+    width:50%;
+}
+
+.section {
+    margin:1%;
+    margin-left:5%;
+}
+
+.example {
+    width:95%;
+    height:50px;
+    resize:none;   
+}
+
+.description {
+    width:70%;
+    resize:none;
+}
+
+#submitTeacher {
+    width:25%;
+    margin-left:37%;
+    margin-bottom:1%;
+    font-size:x-large;
+}
+
+#csv {
+    width:25%;
+    margin-left:37%;
+    margin-bottom:1%;
+    font-size:x-large;
+}
+
+.textAreaTeacher {
+    resize:none;
+}
+
+.submittedTeacher{
+    width:400px;
+    height:80px;
+    padding-top:30px;
+    border:2px solid #eee;
+    background:black;
+    color:white;
+    font-family:Calibri;
+    line-height:50px;
+    text-align:center;
+    font-size:30px;
+    position:absolute;
+    left:35%;
+}

@@ -1,0 +1,56 @@
+<HTML>
+    <HEAD>
+        <TITLE>NORA Teacher</TITLE>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="teacher.css">
+        <script type="text/javascript" src="nowjs/now.js"></script>
+        <script src = "client.js"> </script>
+    </HEAD>
+    
+    <div id=inputsTeacher>
+        Source and Excerpt: <br>
+        <div id=source>
+            <textarea class=textAreaTeacher id=sourceTeacher></textarea>
+        </div>
+        <div id=excerpt>
+            <textarea class=textAreaTeacher id=excerptTeacher></textarea>
+        </div>
+        Tags: <br>
+        <div class =section id=tagSection>
+            <div id=tagsDiv data-count="3">
+                <textarea class=textAreaTeacher id=tag1></textarea> <textarea class=description id=description1></textarea> <br>
+                <textarea class=textAreaTeacher id=tag2></textarea> <textarea class=description id=description2></textarea> <br>  
+                <textarea class=textAreaTeacher id=tag3></textarea> <textarea class=description id=description3></textarea> <br>
+            </div>
+            <button id=tagsAdd>Add More</button>
+        </div>
+        <div class='submittedTeacher' style='display:none'>SUBMITTED</div>
+        Hints: <br>
+        <div class=section id=hintSection>
+            <div id=hintsDiv data-count="3">
+                <textarea class=description id=hint1></textarea> <br>
+                <textarea class=description id=hint2></textarea> <br>
+                <textarea class=description id=hint3></textarea> <br>
+            </div>
+            <button id=hintsAdd>Add More</button>
+        </div>
+        
+        Example Paraphrases: <br>
+        <div class=section id=exampleSection>
+            <div id=examplesDiv data-count="3">
+                <textarea class=example id=example1></textarea> <br>
+                <textarea class=example id=example2></textarea> <br>
+                <textarea class=example id=example3></textarea> <br>
+            </div>
+            <button id=examplesAdd>Add More</button>
+        </div>
+
+        <div id=submitButton>
+            <button id=submitTeacher>SUBMIT</button>
+            
+            <button id=csv>CREATE</button>
+        </div>
+        
+    </div>
+</HTML>
