@@ -15,20 +15,22 @@
             <section id="content">
                 <b>Login Form</b>
                 <div id=loginMessage>
-                    Enter a username, password, and gameID session. <br> 
+                    Enter a username and gameID session. <br> 
                     If you don't know your gameID session, then leave it blank.<br>
                     Either click login or new user. <br>                                                    
                 </div>
                 <div>
                     <input type="text" placeholder="Username" required="" id="username" />
                 </div>
+<!--
                 <div>
                     <input type="password" placeholder="Password" required="" id="password" />
                 </div>
+-->
                 <div>
                     <input type="text" placeholder="GameID" required="" id="gameID" />
                 </div>
-                <div id=loginError></div>
+                <div class=error id=loginError></div>
                 <div>
                     <button class=buttonsGen id=login>Log In</button>
                     <button class=buttonsGen id=newuser>New User</button>
@@ -43,7 +45,17 @@
         </div>
             
         <div class=toast id=whichTag style="display:none"> </div>
-            
+        <div class=toastCol id=toastCol style="display:none">
+            <div class=toast id=writeParaphrase style="display:none; position:relative"> Write a paraphrase for the excerpt below. </div>
+            <div class=toast id=chooseParaphrase style="display:none; position:relative"> Choose a paraphrase here. </div>
+            <div class=toast id=readParaphrase style="display:none; position:relative"> Read the paraphrase. Write a comment with your analysis for each tag.</div>
+<!--            <div class=toast id=attachText style="display:none; position:relative"> If applicable, select text relevant to your comment.</div>-->
+            <div class=toast id=selectText style="display:none; position:relative"> Add another comment.</div>
+            <div class=toast id=tagToast style="display:none; position:relative"> Select the tag that describes your comment. </div>
+            <div class=toast id=writeComment style="display:none; position:relative"> Write your comment. See tag description. </div>
+            <div class=toast id=postedComments style="display:none; position:relative"> Posted comments can be combined, liked, and rearranged.</div>
+        
+        </div>
         <div class=generateStage id=leftCol>
             
             <div class= unselectable id=source>
@@ -53,14 +65,14 @@
             </div>
             
             <div id ="paraphraseSection" data-numTags="" >
-                
+<!--                <div id=instructionsParaphrase>Choose a paraphrase below.</div>-->
             </div>
             
-            <div id ="messageSection" style="display:none">
-                <div id="commentingSection">
+            <div class=unselectable id ="messageSection" style="display:none">
+                <div class=unselectable id="commentingSection">
 <!--                    <div class=tooltips id=paraphraseSelected><span class="paraSelected" id="paraSelectedText"></span></div>-->
                     <div class=tooltips id=paraphraseSelected><span id="paraSelectedText"></span></div>
-                    <div id="originalCommenting" style="margin-top: 10px; display:none" data-developed="false"></div>
+                    <div id="originalCommenting" style="margin-top: 10px; margin-left: 50px; display:none" data-developed="false"></div>
                     <button id="commentBoxMinimized" style="display:none">Add Another Comment</button>
                     <div class=unselectable id="commentBox" style="display:none">
                         <div id=tagSection></div>
@@ -80,8 +92,10 @@
             </div>
             <div id=generatePart>
                 <div id=hints>
-                    <button class=buttonsGen id=hint>Hint: </button> 
+                    Paraphrase the excerpt. If you need help, get a 
+                    <button class=buttonsGen id=hint>hint: </button> 
                     <div id=hintArea></div>
+                    
                 </div>
                 
                 <div id=paraphraseGen>
@@ -93,22 +107,13 @@
                 
                 <div id=finishButtons>
                     <button class=buttonsGen id=done>Done</button>
+                    <span class=error id=paraphraseError></span>
     <!--                <button class=buttonsGen id=skip>Skip</button>-->
                 </div>
             </div>
         </div>
         
-        <div class=toastCol id=toastCol style="display:none">
-<!--            <div class=toast id=writeParaphrase style="display:none; position:relative"> Write a paraphrase for the excerpt below. </div>-->
-            <div class=toast id=chooseParaphrase style="display:none; position:relative"> Choose a paraphrase here. </div>
-            <div class=toast id=readParaphrase style="display:none; position:relative"> Read the paraphrase. Write a comment with your analysis for each tag.</div>
-            <div class=toast id=attachText style="display:none; position:relative"> If applicable, select text relevant to your comment.</div>
-            <div class=toast id=selectText style="display:none; position:relative"> Select text to write a comment about it. <br><br> Or add a general comment.</div>
-            <div class=toast id=tagToast style="display:none; position:relative"> Select the tag that describes your comment. </div>
-            <div class=toast id=writeComment style="display:none; position:relative"> Write your comment. See tag description. </div>
-            <div class=toast id=postedComments style="display:none; position:relative"> Posted comments can be combined, liked, and rearranged.</div>
-        
-        </div>
+
         
 <!--
         <div class=generateRightCol id=rightCol>

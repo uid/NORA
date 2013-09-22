@@ -20,15 +20,20 @@
 	app.configure(function() {
 		return app.use(express["static"](__dirname + '/static/'));
 	});
+    var source = "blah blah";
+    var excerpt = "blah blah blah blah";
+    var paraphrases = ['a', 'b', 'c'];
     
-    var source = "Malcolm Gladwell:";
-        //'Martin Luther King, Jr. "Letter from Birmingham Jail":';
-    var excerpt = "There is no direct way to measure the quality of an institution—how well a college manages to inform, inspire, and challenge its students. So the U.S. News algorithm relies instead on proxies for quality—and the proxies for educational quality turn out to be flimsy at best." 
-//        "Be not afraid of greatness. Some are born great, some achieve greatness, and some have greatness thrust upon ‘em."
-        //"We must come to see that human progress never rolls in on wheels of inevitability. It comes through the tireless efforts and persistent work of men willing to be coworkers with God, and without this hard work time itself becomes an ally of the forces of social stagnation.";
+    var burkeS = "Kenneth Burke’s “Definition of Man”:";
+    var burkeE = "In being a link between us and the nonverbal, words are by the same token a screen separating us from the nonverbal—though the statement gets tangled in its own traces, since so much of the “we” that is separated from the nonverbal by the verbal would not even exist were it not for the verbal (or for our symbolicity in general, since the same applies to the symbol systems of dance, music, painting, and the like) (Burke 5).";
+    var obamaS = "Obama’s “A More Perfect Union”:";
+    var obamaE = "I chose to run for President at this moment in history because I believe deeply that we cannot solve the challenges of our time unless we solve them together, unless we perfect our union by understanding that we may have different stories, but we hold common hopes; that we may not look the same and may not have come from the same place, but we all want to move in the same direction: towards a better future for our children and our grandchildren.";
+    
     var hints = ["Is your language new and different from the original?", "Is your structure different from the original?", "Do you capture the meaning of the original passage?"];
     var tags = {language: "Is the language sufficiently new and original?", structure: "Does the structure convey the idea from the source in the writers' own words?", meaning: "Does the paraphrase accurately reflect the meaning of the original passage?"};
-    var paraphrases = ['Malcolm Gladwell argues that the quality of a college—how well it educates, challenges, and inspires its students—cannot be measured directly. For this reason, he thinks that U.S. News’ algorithm’s reliance on proxies to measure educational quality yields results that are “flimsy at best.”', 'Gladwell argues that the proxies that U.S. News uses to measure a college’s quality are insufficient because educational quality cannot really be measured.'];
+//    var paraphrases = ['Malcolm Gladwell argues that the quality of a college—how well it educates, challenges, and inspires its students—cannot be measured directly. For this reason, he thinks that U.S. News’ algorithm’s reliance on proxies to measure educational quality yields results that are “flimsy at best.”', 'Gladwell argues that the proxies that U.S. News uses to measure a college’s quality are insufficient because educational quality cannot really be measured.'];
+    var burke = ['Words both unite us and divide us from the nonverbal, but the relationship is not smooth, because words help to create our sense of who “we” are (and this is also true for other forms of symbolic representation, such as art or music, for instance).', 'For Kenneth Burke, words play an enormous and complicated role in developing any clear relationship between us and the world, as they function both as a barrier from, and as an entanglement with the world (5).', 'Kenneth Burke draws our attention to the work of symbolic representation (whether words or more abstract systems like art or music) in both connecting us to, and disconnecting us from, the material world, as well as in constituting our identities (5).'];
+    var obama = ['Obama decided to run for President at this time due to his belief that Americans need to work together to solve challenges, and while we have differences in background, identity, and narratives, we have the same hopes and want the same future for the next generation.', 'Obama presents himself as a problem solver who can unite all Americans no matter how disparate in background, region, or ethnicity and thus create the perfect America that everyone wants.', 'While recognizing the many kinds of differences—in identity, region, and history—that divide Americans, Obama foregrounds his faith in the need for a united approach to problem solving as the reason for his candidacy.'];
 //        ["Don't fear greatness. Either you were born great, you will achieve greatness, or it will be forced onto you.", "Anyone can become great.", "Some people are born into a prosperous family or fortunate situation, some work hard to achieve success, while others become successful through sheer luck."];
         //["We need to understand that progress doesn't necessarily come on its own. Human progress arrives when people work with God, and if they don't, time works against them to prevent progress.", "According to Martin Luther King, Jr., time can do two things: if people do God's work, then time will promote progress, but if they don't, time makes things static.", "Martin Luther King Jr. argues that progress is the direct result of human action toward a moral goal, that without this action societal change will not occur, and that we misunderstand progress when we imagine it as a self-propelled force."];
     var msgIDCounter = 0;
@@ -43,7 +48,7 @@
         // usersingame{username: [password, scoreInGame, paraphraseInGame, messagesByUserInGame[msgIDs], msgsLikedByUserInGame[msgIDs] ]}  
         // messagesingame{msgID: [paraphrase, message, tag, likes, selectedText, username]}
         // paraphrasesingame [] where order is the order in game where first ones are the examples provided by teacher       
-    var usersInGame = {'denzil':['denzil',[]]};
+    var usersInGame = {'denzil':['',[]]};
     //username is key
         //[password, [listofGamesUserIsIn] ]
     
@@ -60,6 +65,11 @@
             logString = parameter.join(",")+ "\n" +logString + "\n";
         }
         fileSys.writeFileSync("log.csv", logString);
+    }
+    
+    everyone.now.serverMovedMsg = function (username, gameID, msgID, pos) {
+        var parameter = [username, gameID, "moved message", msgID, pos];
+        log.push(parameter);
     }
     
     everyone.now.serverLikeMsg = function(username, gameID, msgID) { //*
@@ -245,6 +255,17 @@
                 console.log(username);
                 var usersScoreInGame = 0;
                 var userParaphraseInGame = "";
+                var s = "";
+                var e = "";
+                if(gameID.toLowerCase().substring(0, 5) == "burke") {
+                    s= burkeS;
+                    e= burkeE;
+                }
+                else {
+                    s= obamaS;
+                    e= obamaE;
+                }
+
                 if (gameID in games) {
                     //means game is existing. 
                     usersInGame = games[gameID][0];
@@ -265,10 +286,25 @@
                 }
                 else {
                     //game does not exist and  user must still need to create a paraphrase
-                    var copyParaphrases = [];  
-                    for(i=0; i<paraphrases.length; i++) {
-                        copyParaphrases.push(paraphrases[i]);
+                    var s = "";
+                    var e = "";
+                    if(gameID.toLowerCase().substring(0, 5) == "burke") {
+                        var copyParaphrases = [];
+                        for(i=0; i<burke.length; i++) {
+                            copyParaphrases.push(burke[i]);
+                        }
+                        s= burkeS;
+                        e= burkeE;
                     }
+                    else {
+                        var copyParaphrases = [];
+                        for(i=0; i<obama.length; i++) {
+                            copyParaphrases.push(obama[i]);
+                        }
+                        s= obamaS;
+                        e= obamaE;
+                    }
+
                     games[gameID] = [{},{},{}];
                     games[gameID][0][username] = [password, usersScoreInGame, userParaphraseInGame, [], [] ];
                     games[gameID][1] = {};
@@ -276,11 +312,11 @@
                 }
                 
                 if(gameID.toLowerCase().substring(0,4) == "beta") //in tutorial mode so no extra paraprhases
-                    return this.now.paraphraseStage(username, gameID, usersScoreInGame);
+                    return this.now.paraphraseStage(username, gameID, usersScoreInGame, s, e);
                 else if (userParaphraseInGame == "") //user has not created paraphrase for game because just joining game or created new game session //score must be 0
-                    return this.now.loginUser(username, gameID);
+                    return this.now.loginUser(username, gameID, s, e);
                 else //user has been in game before and has created paraphrase before //user score is not 0
-                    return this.now.paraphraseStage(username, gameID, usersScoreInGame);                    
+                    return this.now.paraphraseStage(username, gameID, usersScoreInGame, s, e);                    
                 
             }
             else {
@@ -298,6 +334,16 @@
         if (username in usersInGame) //means user must choose a new username
             return this.now.usernameExists();
         else {
+            var s = "";
+            var e = "";
+            if(gameID.toLowerCase().substring(0, 5) == "burke") {
+                s= burkeS;
+                e= burkeE;
+            }
+            else {
+                s= obamaS;
+                e= obamaE;
+            }
             usersInGame[username] = [password, [gameID]];
             //game exists already
             if(gameID in games) {
@@ -312,16 +358,28 @@
                 var users = {};
                 users[username] = [password, 0, "", [], []];
                 var messages = {};
-                var copyParaphrases = [];
-                for(i=0; i<paraphrases.length; i++) {
-                    copyParaphrases.push(paraphrases[i]);
+                if(gameID.toLowerCase().substring(0, 5) == "burke") {
+                    var copyParaphrases = [];
+                    for(i=0; i<burke.length; i++) {
+                        copyParaphrases.push(burke[i]);
+                    }
+                    s= burkeS;
+                    e= burkeE;
+                }
+                else {
+                    var copyParaphrases = [];
+                    for(i=0; i<obama.length; i++) {
+                        copyParaphrases.push(obama[i]);
+                    }
+                    s= obamaS;
+                    e= obamaE;
                 }
                 games[gameID] = [users, messages, copyParaphrases];                
             }
             if(gameID.toLowerCase().substring(0, 4) == "beta") //in tutorial mode so no extra paraprhases
-                    return this.now.paraphraseStage(username, gameID, 0);
+                    return this.now.paraphraseStage(username, gameID, 0, s, e);
             else//pass back username, password, gameID, whether this is a new game or not, the users in the game and the messages in the game so far
-                return this.now.newUser(username, gameID);
+                return this.now.newUser(username, gameID, s, e);
         }
     }
     

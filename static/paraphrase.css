@@ -9,12 +9,13 @@ html, body {
 }
 
 #commentingSection {
-    height:55px;
-    margin-bottom:10px;
+/*    height:55px;*/
+    margin-bottom:20px;
 }
 
 #messageSection {
     position: relative;
+    height:75%;
 }
 
 #commentBox {
@@ -63,7 +64,7 @@ html, body {
     padding-bottom:10px;
 }
 
-#loginError {
+.error {
     width:80%;
     font-size:small;
     line-height:20px;
@@ -168,8 +169,9 @@ html, body {
 
 .toastCol {
 /*    display:none;*/
-    width:10px;
+    width:120px;
     height:95%;
+    padding-left:10%;
     float:left;
 }
 
@@ -187,21 +189,18 @@ html, body {
 }
 
 .paraphraseStage {
-    padding-left: 10%;
+/*    padding-left: 20%;*/
     padding-top: 1%;
-    width:70%;
+    width:55%;
     height:95%;
 /*    background:#f4f4f4;*/
     float:left;
 }
 
-#hintArea {
-    height:25px;
-}
 
 #excerpt {
     width:50%;
-    padding:20px;
+    margin:20px;
     font-size:large;
 }
 
@@ -211,9 +210,16 @@ html, body {
 }
 
 #hintArea {
+    height:25px;
+    width: 400px;
     padding-top:10px;
-    padding-left:10px;
+    padding-left:20px;
     color:grey;
+}
+
+#hints {
+    color:grey;
+    font-size:medium;
 }
 
 .paraphrases:hover {
@@ -272,7 +278,7 @@ html, body {
 }
 
 #paraphraseSelected {
-    font-size:14px;
+    font-size:15px;
     padding:10px;
     background:white;
     border-top:1px solid #000000;
@@ -286,7 +292,7 @@ html, body {
 /*    margin-bottom:5px;*/
     text-align:justify;
     color:black;
-    cursor:text;
+    cursor:default;
 }
 
 .paraSelected {
@@ -401,7 +407,7 @@ html, body {
 	padding:2px;
     padding-left:5px;
 	word-wrap: break-word;
-    height: 50px;
+/*    height: 50px;*/
     overflow: auto;
 }
 

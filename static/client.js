@@ -34,8 +34,8 @@ now.loadMessages = function(source, excerpt, tags, hints, examples) {
     }
     
     else if(document.title == "NORA") {
-        $('#source').text(source);
-        $('#excerpt').text(excerpt);
+//        $('#source').text(source);
+//        $('#excerpt').text(excerpt);
     }
 };
 
@@ -45,36 +45,41 @@ now.ready(function () {
     
     $('#login').click(function() {
         var username = $("#username").val();
-        var password = $("#password").val();
         var gameID = $("#gameID").val();
+        
+        if(username == "" || gameID == "") {
+            $('#loginError').html("Field cannot be left blank.");    
+        }
+        var password = "";//$("#password").val();
         now.loginServer(username, password, gameID);
     });
 
     $('#newuser').click(function() {
         var username = $("#username").val();
-        var password = $("#password").val();
+        var password = "";//$("#password").val();
         var gameID = $("#gameID").val();
         now.newuserServer(username, password, gameID);
     });                      
     
-    now.loginUser = function (username, gameID) {
+    now.loginUser = function (username, gameID, s, e) {
         //pass back username, password, gameID, the users in the game and the messages in the game so far and the usersMsgs in this game so far
         //username and password and gameID are strings. newGame is a boolean. users and msgs InGame are arrays.
-        now.startup(username, gameID);      
+        now.startup(username, gameID, s, e);      
     }
 
-    now.newUser = function (username, gameID) {
+    now.newUser = function (username, gameID, s, e) {
         //pass back username, password, gameID, whether this is a new game or not, the users in the game and the messages in the game so far
         //username and password and gameID are strings. newGame is a boolean. users and msgs InGame are arrays.
-        now.startup(username, gameID);
+        now.startup(username, gameID, s, e);
     }
     
-    now.startup = function(username, gameID) {
+    now.startup = function(username, gameID, s, e) {
         $('span#username').text(username);
         $('span#gameID').text(gameID);
         $('#loginContainer').css("display", "none");
         $('#hello').css("visibility", "visible");
-        
+        $('#source').text(s);
+        $('#excerpt').text(e);
         $('#score').text("0");
         //write paraphrase instruction toast
         $('#writeParaphrase').fadeIn(400).delay(2000).fadeOut(400);
@@ -180,17 +185,10 @@ now.ready(function () {
 //                $('#paraSelectedText').addClass('paraSelected')
 //            }
             var opacity = "1";
-            if(username == myUsername) {
-                opacity = "0.5"
-            }
             var background = $('div#commentBox #'+tag).attr('data-background');
             now.logCSV();
-            var threadStart = '<div class=thread id=t_'+msg_id+' data-size=1 data-sentence='+sentence+' data-background='+background+'>'
-            var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+' style="opacity: '+opacity+'">'
-            var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= '+numLikes+' data-ST = "'+selectedText+'" data-background="'+background+'" style="background: '+background+'">';
-            var end = '</div>';
             var tag = '<span id=tag_'+msg_id+' style="font-size:small;float:left;">#'+ tag + '</span>';
-            var chatMessageStart = '<div id=chatMsg_'+msg_id+'>';          
+            
             var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
                        '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>'+tag +
                             '<span class=likeButton id=likeButton_'+msg_id+' style="float: right;display:block;">'+
@@ -199,6 +197,17 @@ now.ready(function () {
                                     '</button>'+
                             '</span>'+ 
                         '</span></div>';
+            if(username == myUsername) {
+                opacity = "0.7"
+                tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+                       '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>'+tag + '</span></div>';
+            }
+            var threadStart = '<div class=thread id=t_'+msg_id+' data-size=1 data-sentence='+sentence+' data-background='+background+'>'
+            var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+' style="opacity: '+opacity+'">'
+            var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= '+numLikes+' data-ST = "'+selectedText+'" data-background="'+background+'" style="background: '+background+'">';
+            var end = '</div>';
+            var chatMessageStart = '<div id=chatMsg_'+msg_id+'>';          
+            
             
             var chatbox = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
             var thread = $(threadStart + msgntagsStart + msgStart + chatMessageStart + chatMessage + end + end + tagsnlike + end + chatbox + end);
@@ -253,19 +262,23 @@ now.ready(function () {
                     var widthM = parseInt($('#rightCol').css('width'))*9/10;
                     if(pos.left > widthM)  {$('#'+id).css('left', widthM+'px'); }
                     if(pos.top < 0) {$('#'+id).css('top', '10px');}
+                    pos = $(event.target).position();
+                    var username = $('span#username').text();
+                    var gameID = $('span#gameID').text();
+                    now.serverMovedMsg(username, gameID, id, pos);
                     
                 }
             });
             
             thread.droppable({
-                hoverClass: "highlight",
+//                hoverClass: "highlight",
                 drop: function(event, ui) {
-                    var threadSource = event.target.id;
-                    var threadTarget = ui.draggable.attr('id');
-                    var username = $('span#username').text();
-                    var gameID = $('span#gameID').text();
-                
-                    now.serverMergeThread(username, gameID, threadSource, threadTarget);
+//                    var threadSource = event.target.id;
+//                    var threadTarget = ui.draggable.attr('id');
+//                    var username = $('span#username').text();
+//                    var gameID = $('span#gameID').text();
+//                
+//                    now.serverMergeThread(username, gameID, threadSource, threadTarget);
                 }
     
            });
@@ -281,12 +294,6 @@ now.ready(function () {
             var msgStart = '<div class=msg id=msg_'+msgid+' data-likes_'+msgid+'= '+numLikes+' data-ST = "" style=background-color:'+background+';>';
             var end = '</div>';
             var opacity = "1";
-            if(username == myUsername) {
-                opacity = "0.5"
-            }
-            now.logCSV();
-            var msgntagsStart = '<div class=msgntags id=mt_'+msgid+' style="opacity: '+opacity+'">';
-            var chatMessageStart = '<div id=chatMsg_'+msgid+'>';
             var likes = '<div id=tagsnlike style= "background-color:'+background+';border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
                         '<span style="background-color:'+background+';width:100%;display:block; overflow:hidden;">'+
                             '<span id=likeButton_'+msgid+' style="float:right;display:block;">'+
@@ -295,6 +302,15 @@ now.ready(function () {
                                     '</button>'+
                             '</span>'+
                         '</span></div>';
+            if(username == myUsername) {
+                opacity = "0.7"
+                likes = '<div id=tagsnlike style= "background-color:'+background+';border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+                        '<span style="background-color:'+background+';width:100%;display:block; overflow:hidden;">'+'</span></div>';
+            }
+            now.logCSV();
+            var msgntagsStart = '<div class=msgntags id=mt_'+msgid+' style="opacity: '+opacity+'">';
+            var chatMessageStart = '<div id=chatMsg_'+msgid+'>';
+            
             var chatbox = $('#chatbox_'+msg_id);
             var msg = msgntagsStart+msgStart + chatMessageStart + chatText + end + end + likes +end;
             var thread = "t_"+msg_id;
@@ -549,7 +565,7 @@ now.ready(function () {
                 for (key in tags) {
                     var tagDiv = '<div> <span class="tagsOriginal" id="'+key+'" style="background:'+colors[countTags]+'; padding-top:1px" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</span> - '+tags[key]+'</div>';
                     countTags += 1; 
-                    var buttonDiv = '<button class=attachButton id="attachButton'+countTags+'">Attach Selected Text</button><br>';
+                    var buttonDiv = '';//'<button class=attachButton id="attachButton'+countTags+'">Attach Selected Text</button><br>';
                     
 //                    var descriptionDiv = '<div class="descriptionOriginal" id="'+key+'Description" style="background:'+colors[countTags]+'" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>'+tags[key]+'</div>' ;
 //                    $('#originalCommenting').append(descriptionDiv);
@@ -560,7 +576,7 @@ now.ready(function () {
                     
                     $('#originalCommenting').attr('data-developed', 'true');      
                 }
-                var doneButton = '<div id=doneOriginalButton><button class=buttonsGen id=doneOriginal>Done</button></div>';
+                var doneButton = '<div id=doneOriginalButton><button class=buttonsGen id=doneOriginal>Done</button> <span class=error id=loginOriginalError></span></div>';
                 $('#originalCommenting').append(doneButton); 
                 
                 $('.attachButton').click(function() {
@@ -633,29 +649,47 @@ now.ready(function () {
                 });
                     
                 $('#doneOriginal').click(function() {
+                    var show=true;
                     var sentence = $('#chatbox').attr('data-paraphraseActive');
                     var numTags = $('#paraphraseSection').attr('data-numTags');
-                    $('#messages'+sentence).css("display", "");
+                        
                     for(i=1; i<numTags; i++) {
                         var chatMsg = $('#chatbox'+i).val();
-                        $('#chatbox'+i).val('');
-                        var tag = $('#chatbox'+i).attr('data-tag');
-                        var sentence = document.getElementById('chatbox').getAttribute('data-paraphraseActive');
-                        if (sentence != "") {
-                            var username = $('span#username').text();
-                            var gameID = $('span#gameID').text();
-                            var selectedText = document.getElementById('chatbox'+i).getAttribute('data-selected');
-                               
-                            now.serverGotNewChat(username, gameID, chatMsg, tag, sentence, selectedText);
-                            var scoreAdd = "10";
-                            now.addScoreServer(username, gameID, scoreAdd);
-                            $('#readParaphrase').css('display', 'none');
+                        if(chatMsg == "") {
+                            $('#loginOriginalError').html("You must write a comment for every tag."); 
+                            show=false;
+                            break;
                         }
                     }
-                    $('#originalCommenting').css('display', 'none');
-                    $('#paraphrase'+sentence).attr('data-original', 'false');
-                    $('#commentBoxMinimized').css('display','');
-                    now.serverFirstTime(username, gameID, num);
+                    if(show) {
+                        $('#messages'+sentence).css("display", "");
+                        
+                        for(i=1; i<numTags; i++) {
+                            var chatMsg = $('#chatbox'+i).val();
+                            if(chatMsg == "") {
+                                $('#loginOriginalError').html("You must write a comment for every tag."); 
+                                show=false;
+                                break;
+                            }
+                            $('#chatbox'+i).val('');
+                            var tag = $('#chatbox'+i).attr('data-tag');
+                            var sentence = document.getElementById('chatbox').getAttribute('data-paraphraseActive');
+                            if (sentence != "") {
+                                var username = $('span#username').text();
+                                var gameID = $('span#gameID').text();
+                                var selectedText = document.getElementById('chatbox'+i).getAttribute('data-selected');
+                                   
+                                now.serverGotNewChat(username, gameID, chatMsg, tag, sentence, selectedText);
+                                var scoreAdd = "10";
+                                now.addScoreServer(username, gameID, scoreAdd);
+                                $('#readParaphrase').css('display', 'none');
+                            }
+                        }
+                        $('#originalCommenting').css('display', 'none');
+                        $('#paraphrase'+sentence).attr('data-original', 'false');
+                        $('#commentBoxMinimized').css('display','');
+                        now.serverFirstTime(username, gameID, num);
+                    }
                 });
 //            }
         }
@@ -813,7 +847,7 @@ now.ready(function () {
         
         $('.paraphrases').hover(
                 function() {
-                    var newTop = parseInt($('#source').position().top)*0.9;
+                    var newTop = parseInt($('#paraphraseSection').position().top)*0.8;
                     $('#chooseParaphrase').css('top', newTop+'px');
             //            var newLeft = parseInt($('#leftCol').css('width'))+10;
                     var newLeft = 250;
@@ -865,8 +899,10 @@ now.ready(function () {
         }
     }
     
-    now.paraphraseStage = function(username, gameID, usersScoreInGame) {
+    now.paraphraseStage = function(username, gameID, usersScoreInGame, s, e) {
         //just in case it hasn't done this step yet because it can technically come to this method straight from the login server-side method
+        $('#source').text(s);
+        $('#excerpt').text(e);
         if(gameID.toLowerCase().substring(0,4) == "beta") 
             now.addParaphraseServer(username, gameID, "");
         $('span#username').text(username);
@@ -882,9 +918,12 @@ now.ready(function () {
         $('#toastCol').css('display', '');
         $('#generatePart').css('display','none');
         $('#excerpt').css('width', '90%');
-        $('#excerpt').css('font-size', '12px');
-        $('#excerpt').css('padding-top', '10px');
-        $('#source').css('font-size', '12px');
+        $('#excerpt').css('height', '80px');
+        $('#excerpt').css('font-size', '14.5px');
+        $('#excerpt').css('margin-top', '10px');
+        $('#excerpt').css('margin-left', '50px');
+        
+        $('#source').css('font-size', '14px');
         $('#source').css('padding-left', '10px');
 //        $('#instructionsButton').css("display", "");
         $('#score').text(usersScoreInGame);
@@ -893,7 +932,7 @@ now.ready(function () {
         $('#chooseText').css('display','');
         $('#messageSection').css('display', '');
         
-        var newTop = parseInt($('#source').position().top)*0.9;
+        var newTop = parseInt($('#paraphraseSection').position().top)*0.8;
         $('#chooseParaphrase').css('top', newTop+'px');
 //            var newLeft = parseInt($('#leftCol').css('width'))+10;
         var newLeft = 250;
@@ -1017,6 +1056,13 @@ now.ready(function () {
                     }
                 }
             }
+            else if (log[each][0] == username && log[each][1] == gameID && log[each][2] == "moved message" ) {
+//                var parameter = [username, gameID, "moved message", msgID, pos];
+                var id = log[each][3];
+                var pos = log[each][4];
+                $('#'+id).css('left', pos.left);
+                $('#'+id).css('top', pos.top);
+            }
             else if (log[each][0] == username && log[each][1] == gameID && log[each][2] == "wrote first comments" ) {
                 var num = log[each][3];
                 $('#paraphrase'+num).attr('data-original', "false");
@@ -1093,12 +1139,19 @@ now.ready(function () {
     
     $('#done').click(function() {
         var paraphrase = $('#paraGenChat').val();
-        var username = $('span#username').text();
-        var gameID = $('span#gameID').text();
-        var scoreAdd = "100";
-        now.addScoreServer(username, gameID, scoreAdd);
-        now.addParaphraseServer(username, gameID, paraphrase);
-        now.paraphraseStage(username, gameID, "100");
+        if (paraphrase != "") {
+            var username = $('span#username').text();
+            var gameID = $('span#gameID').text();
+            var scoreAdd = "100";
+            now.addScoreServer(username, gameID, scoreAdd);
+            now.addParaphraseServer(username, gameID, paraphrase);
+            var s = $('#source').text();
+            var e = $('#excerpt').text();
+            now.paraphraseStage(username, gameID, "100", s, e);
+        }
+        else {
+            $('#paraphraseError').html("You must write a paraphrase first."); 
+        }
     });
     
     now.newScore = function(username, gameID, totalScore) {
@@ -1113,7 +1166,6 @@ now.ready(function () {
         var myGameID = $('span#gameID').text();
         var myUsername = $('span#username').text();
         var show = $('#leftCol').hasClass("paraphraseStage");
-        console.log("called here "+gameID+" vs "+myGameID+" vs "+username+" vs!= "+myUsername+" vs "+show);
         if(gameID == myGameID && myUsername != username && show) {
             
             var count = $("#paraphraseSection > span").size()+1;
