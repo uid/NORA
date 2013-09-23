@@ -309,7 +309,7 @@ now.ready(function () {
             }
             now.logCSV();
             var msgntagsStart = '<div class=msgntags id=mt_'+msgid+' style="opacity: '+opacity+'">';
-            var chatMessageStart = '<div id=chatMsg_'+msgid+'>';
+            var chatMessageStart = '<div id=chatMsg_'+msgid+'> <b>'+username+':</b> ';
             
             var chatbox = $('#chatbox_'+msg_id);
             var msg = msgntagsStart+msgStart + chatMessageStart + chatText + end + end + likes +end;
