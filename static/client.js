@@ -207,7 +207,7 @@ now.ready(function () {
             var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+' style="opacity: '+opacity+'">'
             var msgStart = '<div class=msg id=msg_'+msg_id+' data-likes_'+msg_id+'= '+numLikes+' data-ST = "'+selectedText+'" data-background="'+background+'" style="background: '+background+'">';
             var end = '</div>';
-            var chatMessageStart = '<div id=chatMsg_'+msg_id+'>';          
+            var chatMessageStart = '<div id=chatMsg_'+msg_id+'><b>'+username+':</b> '';          
             
             
             var chatbox = '<textarea rows="1" style="width:100%" class=msgChat id=chatbox_'+msg_id+'></textarea>';
