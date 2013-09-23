@@ -199,8 +199,8 @@ now.ready(function () {
                         '</span></div>';
             if(username == myUsername) {
                 opacity = "0.7"
-                tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
-                       '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>'+tag + '</span></div>';
+//                tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+//                       '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>'+tag + '</span></div>';
             }
             var threadStart = '<div class=thread id=t_'+msg_id+' data-size=1 data-sentence='+sentence+' data-background='+background+'>'
             var msgntagsStart = '<div class=msgntags id=mt_'+msg_id+' style="opacity: '+opacity+'">'
@@ -304,8 +304,8 @@ now.ready(function () {
                         '</span></div>';
             if(username == myUsername) {
                 opacity = "0.7"
-                likes = '<div id=tagsnlike style= "background-color:'+background+';border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
-                        '<span style="background-color:'+background+';width:100%;display:block; overflow:hidden;">'+'</span></div>';
+//                likes = '<div id=tagsnlike style= "background-color:'+background+';border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+//                        '<span style="background-color:'+background+';width:100%;display:block; overflow:hidden;">'+'</span></div>';
             }
             now.logCSV();
             var msgntagsStart = '<div class=msgntags id=mt_'+msgid+' style="opacity: '+opacity+'">';
