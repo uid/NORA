@@ -180,6 +180,7 @@ now.ready(function () {
     now.gotNewChat = function(username, gameID, chatMessage, tag, msg_id, sentence, selectedText, numLikes, msgNum) {
         var myGameID = $('span#gameID').text();
         var myUsername = $('span#username').text();
+        console.log("here ");
         if(gameID == myGameID) {
 //            if(!$('#paraSelectedText').hasClass('paraSelected')) {
 //                $('#paraSelectedText').addClass('paraSelected')
