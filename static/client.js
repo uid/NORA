@@ -712,7 +712,6 @@ now.ready(function () {
     now.fillInParaphrase = function(paraphrase, num, tags) {
         //called on server-side
         num += 1;
-        now.logCSV();
         $('#paraSelectedText').text(paraphrase);
         var firstTime = $('#paraphrase'+num).attr('data-original');
         if(firstTime=="true") {
@@ -838,7 +837,7 @@ now.ready(function () {
                     var show=true;
                     var sentence = $('#sourceReview').attr('data-paraphraseActive');
                     var numTags = $('#paraphraseSection').attr('data-numTags');
-                        
+                    now.logCSV();    
                     for(i=1; i<numTags; i++) {
                         var chatMsg = $('#chatbox'+i).val();
                         if(chatMsg == "") {
