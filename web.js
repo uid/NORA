@@ -205,6 +205,7 @@
     
     everyone.now.getParaphraseServer = function(gameID, num) {
         var para = games[gameID][2][num];
+        console.log
         //passing tags too for firstChats Comment box
         return this.now.fillInParaphrase(para, num, tags);
     }
@@ -413,6 +414,9 @@
                 }
                 else if(gameID.toLowerCase().substring(0, 7) == "spanish") {
                     var copyParaphrases = [];
+                    for(i=0; i<essay.length; i++) {
+                        copyParaphrases.push(essay[i]);
+                    }
                     console.log("here");
                 }
                 else {
