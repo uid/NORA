@@ -186,29 +186,11 @@ now.ready(function () {
 //                $('#paraSelectedText').addClass('paraSelected')
 //            }
             var opacity = "1";
+            var background = $('div#commentBox #'+tag).attr('data-background');
             now.logCSV();
-            if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                var colors = ["#FFFFDA", "#EB6A9D", "#99FF99", "#FFE2FF", "#CB6666", "#A0A0AB"];
-                
-                var background = colors[parseInt(tag)-1];
+            var tag = '<span id=tag_'+msg_id+' style="font-size:small;float:left;">#'+ tag + '</span>';
             
-                var tag = '<span id=tag_'+msg_id+' style="font-size:small;float:left;">#'+ tag + '</span>';
-            
-                var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
-                       '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>' +
-                            '<span class=likeButton id=likeButton_'+msg_id+' style="float: right;display:block;">'+
-                                    '<button class=plusOne id=plusOne_'+msg_id+' onClick="now.likeMsg(\''+msg_id+'\');" >' +
-                                        '<span id=numLikes_'+msg_id+' style="font-size:x-small;">+ '+numLikes+'</span>' + 
-                                    '</button>'+
-                            '</span>'+ 
-                        '</span></div>';
-            }
-            else {
-                var background = $('div#commentBox #'+tag).attr('data-background');
-            
-                var tag = '<span id=tag_'+msg_id+' style="font-size:small;float:left;">#'+ tag + '</span>';
-            
-                var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
+            var tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
                        '<span style=background-color:'+background+';width:100%;display:block;overflow:hidden;>'+tag +
                             '<span class=likeButton id=likeButton_'+msg_id+' style="float: right;display:block;">'+
                                     '<button class=plusOne id=plusOne_'+msg_id+' onClick="now.likeMsg(\''+msg_id+'\');" >' +
@@ -216,7 +198,6 @@ now.ready(function () {
                                     '</button>'+
                             '</span>'+ 
                         '</span></div>';
-            }
             if(username == myUsername) {
 //                opacity = "0.7"
 //                tagsnlike = '<div id=tagsnlike style= "background-color:'+background+'; border-left:1px solid #000; border-right:1px solid #000; border-bottom:1px solid #000;">'+
@@ -624,10 +605,7 @@ now.ready(function () {
             }
             
             //something wrong here i think
-            
-            if(gameID.toLowerCase().substring(0, 7) != "spanish") {
-                $('#submitChat').attr("disabled", "disabled");
-            } 
+            $('#submitChat').attr("disabled", "disabled"); 
             $('#selectTag').css("display", "");
             var num = $('#sourceReview').attr('data-paraphraseActive');
             text = $('#paraphraseSelected').text();
@@ -728,42 +706,23 @@ now.ready(function () {
 //            if(developed=="false") {
                 var colors = ["#FFFFDA", "#EB6A9D", "#99FF99", "#FFE2FF", "#CB6666", "#A0A0AB"];
                 var countTags =0;
-                var gameID = $('span#gameID').text();
-            
-                if(gameID.toLowerCase().substring(0, 7) == "spanish") {
+                for (key in tags) {
+                    var tagDiv = '<div> <span class="tagsOriginal" id="'+key+'" style="background:'+colors[countTags]+'; padding-top:1px" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</span> - '+tags[key]+'</div>';
+                    countTags += 1; 
+                    var buttonDiv = '';//'<button class=attachButton id="attachButton'+countTags+'">Attach Selected Text</button><br>';
                     
-                    var key = $("div.active").attr('data-num')
-                    var tagDiv = '<div> <span class="tagsOriginal" id="'+key+'" style="padding-top:1px" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</span> - '+tags[key]+'</div>';
-                    countTags += 1;
-                    var buttonDiv = '';
+//                    var descriptionDiv = '<div class="descriptionOriginal" id="'+key+'Description" style="background:'+colors[countTags]+'" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>'+tags[key]+'</div>' ;
+//                    $('#originalCommenting').append(descriptionDiv);
+//                   
                     var chatTag = '<textarea class=chatboxesOriginal id="chatbox'+countTags+'" data-tag="'+key+'" data-selected=""></textarea>'
-                        var thisTagSection = '<div class=thisTagSection id="tagSection'+countTags+'" data-tag="'+key+'">'+tagDiv+buttonDiv+chatTag+'</div>';
-                        $('#originalCommenting').append(thisTagSection);          
-                        
-                        $('#originalCommenting').attr('data-developed', 'true');    
-                    $('#chatbox1').focus();
+                    var thisTagSection = '<div class=thisTagSection id="tagSection'+countTags+'" data-tag="'+key+'">'+tagDiv+buttonDiv+chatTag+'</div>';
+                    $('#originalCommenting').append(thisTagSection);          
+                    
+                    $('#originalCommenting').attr('data-developed', 'true');      
                 }
-                else {
-                    for (key in tags) {
-                        var tagDiv = '<div> <span class="tagsOriginal" id="'+key+'" style="background:'+colors[countTags]+'; padding-top:1px" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</span> - '+tags[key]+'</div>';
-                        countTags += 1; 
-                        var buttonDiv = '';//'<button class=attachButton id="attachButton'+countTags+'">Attach Selected Text</button><br>';
-                        
-    //                    var descriptionDiv = '<div class="descriptionOriginal" id="'+key+'Description" style="background:'+colors[countTags]+'" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>'+tags[key]+'</div>' ;
-    //                    $('#originalCommenting').append(descriptionDiv);
-    //                   
-                        var chatTag = '<textarea class=chatboxesOriginal id="chatbox'+countTags+'" data-tag="'+key+'" data-selected=""></textarea>'
-                        var thisTagSection = '<div class=thisTagSection id="tagSection'+countTags+'" data-tag="'+key+'">'+tagDiv+buttonDiv+chatTag+'</div>';
-                        $('#originalCommenting').append(thisTagSection);          
-                        
-                        $('#originalCommenting').attr('data-developed', 'true');      
-                    }
-                
-                }
-                
                 var doneButton = '<div id=doneOriginalButton><button class=buttonsGen id=doneOriginal>Done</button> <span class=error id=loginOriginalError></span></div>';
                 $('#originalCommenting').append(doneButton); 
-                $('#chatbox1').focus();
+                
                 $('.attachButton').click(function() {
                     var selection = $('#paraSelectedText').text();
                     var text = $('#paraphraseSelected').text();
@@ -809,7 +768,6 @@ now.ready(function () {
                             $('#paraphraseSelected').html('<span id="paraSelectedText">'+text+'</span>');
                         }
                     }
-                    $('#chatbox1').focus();
                 });
                 
                 
@@ -842,7 +800,7 @@ now.ready(function () {
                     for(i=1; i<numTags; i++) {
                         var chatMsg = $('#chatbox'+i).val();
                         if(chatMsg == "") {
-                            $('#loginOriginalError').html("You must write a comment."); 
+                            $('#loginOriginalError').html("You must write a comment for every tag."); 
                             show=false;
                             break;
                         }
@@ -850,15 +808,11 @@ now.ready(function () {
                     
                     if(show) {
                         $('#messages'+sentence).css("display", "");
-                        var gameID = $('span#gameID').text();
-            
-                        if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                            numTags = 2;
-                        }
+                        
                         for(i=1; i<numTags; i++) {
                             var chatMsg = $('#chatbox'+i).val();
                             if(chatMsg == "") {
-                                $('#loginOriginalError').html("You must write a comment."); 
+                                $('#loginOriginalError').html("You must write a comment for every tag."); 
                                 show=false;
                                 break;
                             }
@@ -892,9 +846,7 @@ now.ready(function () {
                             document.getElementById('paraphraseSection').scrollTop = 0;
                         }
                     }
-                    $('#chatbox1').focus();
                 });
-            $('#chatbox1').focus();
 //            }
         }
         else {
@@ -955,92 +907,80 @@ now.ready(function () {
 //        if(gameID == myGameID && show) { }
         var colors = ["#FFFFDA", "#EB6A9D", "#99FF99", "#FFE2FF", "#CB6666", "#A0A0AB"];
         
-        var gameID = $('span#gameID').text();
-        if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-            $('#tagSection').remove();
-            $('#description').remove();
-            $('span#selectTag').remove();
-            $('#submitChat').removeAttr("disabled");
+        var countTags =0;
+        for (key in tags) {
+            var tagDiv = '<button class="tags" id="'+key+'" style="background:'+colors[countTags]+'" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</button>';
+            $('#tagSection').append(tagDiv);
+            countTags += 1;
         }
-        else {
-            var countTags =0;
-            for (key in tags) {
-                var tagDiv = '<button class="tags" id="'+key+'" style="background:'+colors[countTags]+'" data-description="'+tags[key]+'" data-background="'+colors[countTags]+'" data-num=t_'+countTags+'>#'+key+'</button>';
-                $('#tagSection').append(tagDiv);
-                countTags += 1;
-            }
         
-        
-            $(".tags").hover(function() {
-                    var elem = this.id;
-                        var background = $('#'+elem).css("background-color");
-                        var visible = $('#description').css('visibility');
-                        var descrip = $('#'+elem).attr('data-description');
-                        if (descrip != "" && visible == "hidden") {
-                            $('#description').text(descrip);
-                            $('#description').css("visibility", "visible");
-                            $('#description').css("background-color", background);
-                        }
-                        
-                    }, 
-                    function() {
-                        var elem = this.id;
-                        var selected = $('#'+elem).hasClass("selected");
-                        var descrip = $('#'+elem).attr('data-description');
-                        var text = $('#description').text();
-                        if(!selected && text == descrip)            
-                            $('#description').css("visibility", "hidden");
-            });
-            
-            $('.tags').click(function() {
-                if(document.getElementById('sourceReview').getAttribute('data-paraphraseActive') != "") {
-                    var elem = this.id;
-                    if($('#'+elem).hasClass('selected')) {
-                        $('#'+elem).removeClass('selected');//unselecting tag
-                        var tag = "";
-                        if(tag == "") {
-                            if(gameID.toLowerCase().substring(0, 7) != "spanish") {
-                                $('#submitChat').attr("disabled", "disabled");
-                            }
-                            $('#selectTag').css("display", "");
-    //                        $('#tagSelection').css("visibility", "visible");
-                        }
+        $(".tags").hover(function() {
+                var elem = this.id;
+                    var background = $('#'+elem).css("background-color");
+                    var visible = $('#description').css('visibility');
+                    var descrip = $('#'+elem).attr('data-description');
+                    if (descrip != "" && visible == "hidden") {
+                        $('#description').text(descrip);
+                        $('#description').css("visibility", "visible");
+                        $('#description').css("background-color", background);
                     }
-                    else { //selecting tag
-                        $('#chatbox').attr("data-post", elem);
-                        $('#'+elem).addClass('selected');
-                        var background = $('#'+elem).css("background-color");
-                        var visible = $('#description').css('visibility');
-                        var descrip = $('#'+elem).attr('data-description');
-                        if (descrip != "") {
-                            $('#description').text(descrip);
-                            $('#description').css("visibility", "visible");
-                            $('#description').css("background-color", background);
-                        }
-                        var background = document.getElementById(elem).getAttribute('data-background');
-                        $('#'+elem).css("background", background);
-    //                    $('#tagSelection').css("visibility", "hidden");
-                            $('#submitChat').removeAttr("disabled");
-                            $('#selectTag').css("display", "none");
-                        $('.tags').each(function() {
-                            if(($(this).hasClass("selected"))) {
-                                var e = this.id;
-                                if(e!=elem) {
-                                    $('#'+e).removeClass('selected');
-                                }
-                            }
-                        });
-                    }
-                    $('#chatbox1').focus();
-                }
-                else {
-    //                $('#tagSelection').text('First select a paraphrase');
-    //                $('#tagSelection').css("visibility", "visible");
                     
+                }, 
+                function() {
+                    var elem = this.id;
+                    var selected = $('#'+elem).hasClass("selected");
+                    var descrip = $('#'+elem).attr('data-description');
+                    var text = $('#description').text();
+                    if(!selected && text == descrip)            
+                        $('#description').css("visibility", "hidden");
+        });
+        
+        $('.tags').click(function() {
+            if(document.getElementById('sourceReview').getAttribute('data-paraphraseActive') != "") {
+                var elem = this.id;
+                if($('#'+elem).hasClass('selected')) {
+                    $('#'+elem).removeClass('selected');//unselecting tag
+                    var tag = "";
+                    if(tag == "") {
+                        
+                        $('#submitChat').attr("disabled", "disabled");
+                        $('#selectTag').css("display", "");
+//                        $('#tagSelection').css("visibility", "visible");
+                    }
                 }
-            });
-        }
-            
+                else { //selecting tag
+                    $('#chatbox').attr("data-post", elem);
+                    $('#'+elem).addClass('selected');
+                    var background = $('#'+elem).css("background-color");
+                    var visible = $('#description').css('visibility');
+                    var descrip = $('#'+elem).attr('data-description');
+                    if (descrip != "") {
+                        $('#description').text(descrip);
+                        $('#description').css("visibility", "visible");
+                        $('#description').css("background-color", background);
+                    }
+                    var background = document.getElementById(elem).getAttribute('data-background');
+                    $('#'+elem).css("background", background);
+//                    $('#tagSelection').css("visibility", "hidden");
+                        $('#submitChat').removeAttr("disabled");
+                        $('#selectTag').css("display", "none");
+                    $('.tags').each(function() {
+                        if(($(this).hasClass("selected"))) {
+                            var e = this.id;
+                            if(e!=elem) {
+                                $('#'+e).removeClass('selected');
+                            }
+                        }
+                    });
+                }
+                $('#chatbox').focus();
+            }
+            else {
+//                $('#tagSelection').text('First select a paraphrase');
+//                $('#tagSelection').css("visibility", "visible");
+                
+            }
+        });
         
         //generate paraphrases on page
         var count = 1;
@@ -1056,13 +996,11 @@ now.ready(function () {
             var elem = this.id;
             var num = parseInt($('#'+elem).attr("data-num"))-1;
             now.paraphraseClicked(elem, num);
-            $('#chatbox1').focus();
+            $('#chatbox').focus();
             var gameID = $('span#gameID').text();
             now.getParaphraseServer(gameID, num);
             $('#selectParaphrase').text("Choose a tag for your comment.");
             $('#chooseParaphrase').css("display", "none");
-            
-            $('#chatbox1').focus();
         });
         
         $('.paraphrases').hover(
@@ -1157,7 +1095,7 @@ now.ready(function () {
 //        $('#commentBox').css('display','');
         $('#chooseText').css('display','');
         $('#messageSection').css('display', '');
-        $('#chatbox1').focus();
+        
 //        var newTop = parseInt($('#paraphraseSection').position().top)*0.8;
 //        $('#chooseParaphrase').css('top', newTop+'px');
 ////            var newLeft = parseInt($('#leftCol').css('width'))+10;
@@ -1338,7 +1276,7 @@ now.ready(function () {
                 var show = $('#commentBoxMinimized').css('display');
                 if(show == 'block') {
                     $('#commentBoxMinimized').click();
-                    $('#chatbox1').focus();
+                    $('#chatbox').focus();
                 }
             }
             else {
@@ -1368,7 +1306,6 @@ now.ready(function () {
         });
         
         $('#paraphrase1').click();
-        $('#chatbox1').focus();
     }
     
     $('#done').click(function() {
@@ -1413,7 +1350,7 @@ now.ready(function () {
                 var elem = this.id;
                 var num = parseInt($('#'+elem).attr("data-num"))-1;
                 now.paraphraseClicked(elem, num);
-                $('#chatbox1').focus();
+                $('#chatbox').focus();
                 var gameID = $('span#gameID').text();
                 now.getParaphraseServer(gameID, num);
                 $('#selectParaphrase').text("Choose a tag for your comment.");
@@ -1422,7 +1359,6 @@ now.ready(function () {
             
             var messageDiv = '<div class=messages id=messages'+count+' style="display:none" data-num=0> </div>';
             $('#messageSection').append(messageDiv);
-            $('#chatbox1').focus();
         }
     }
     

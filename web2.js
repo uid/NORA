@@ -30,15 +30,10 @@
     var obamaE = "I chose to run for President at this moment in history because I believe deeply that we cannot solve the challenges of our time unless we solve them together, unless we perfect our union by understanding that we may have different stories, but we hold common hopes; that we may not look the same and may not have come from the same place, but we all want to move in the same direction: towards a better future for our children and our grandchildren.";
     
     var hints = ["Is your language new and different from the original?", "Is your structure different from the original?", "Do you capture the meaning of the original passage?"];
-//     var tags = {grammar: "Does it follow the rules of the language (e.g., subject-verb-agreement, tense, etc.)?", meaning: "Is the meaning/story of the passage clear?", style: "Is the vocabulary/word-choice appropriate in order to convey the author's intended meaning?"};
-    var tags  = {1: '¿Qué representa el viento (wind) en la película?', 2:'¿Qué papel (role) desempeñan (play) las madres en la película?' , 3: '¿Qué papel desempeñan los personajes masculinos?', 4:'¿Por qué se llama la película Volver?'}
-    var essay = ['¿Qué representa el viento (wind) en la película?', '¿Qué papel (role) desempeñan (play) las madres en la película?', '¿Qué papel desempeñan los personajes masculinos?', '¿Por qué se llama la película Volver?'];
-//    var tags = {language: "Is the language sufficiently new and original?", structure: "Does the structure convey the idea from the source in the writers' own words?", meaning: "Does the paraphrase accurately reflect the meaning of the original passage?"};
+    var tags = {language: "Is the language sufficiently new and original?", structure: "Does the structure convey the idea from the source in the writers' own words?", meaning: "Does the paraphrase accurately reflect the meaning of the original passage?"};
 //    var paraphrases = ['Malcolm Gladwell argues that the quality of a college—how well it educates, challenges, and inspires its students—cannot be measured directly. For this reason, he thinks that U.S. News’ algorithm’s reliance on proxies to measure educational quality yields results that are “flimsy at best.”', 'Gladwell argues that the proxies that U.S. News uses to measure a college’s quality are insufficient because educational quality cannot really be measured.'];
-    var burke = ['<b>Paraphrase 1 </b><br> Words both unite us and divide us from the nonverbal, but the relationship is not smooth, because words help to create our sense of who “we” are (and this is also true for other forms of symbolic representation, such as art or music, for instance).', '<b>Paraphrase 2 </b><br> For Kenneth Burke, words play an enormous and complicated role in developing any clear relationship between us and the world, as they function both as a barrier from, and as an entanglement with the world (5).', '<b>Paraphrase 3 </b><br> Kenneth Burke draws our attention to the work of symbolic representation (whether words or more abstract systems like art or music) in both connecting us to, and disconnecting us from, the material world, as well as in constituting our identities (5).'];
-    var obama = ['<b>Paraphrase 1 </b><br> Obama decided to run for President at this time due to his belief that Americans need to work together to solve challenges, and while we have differences in background, identity, and narratives, we have the same hopes and want the same future for the next generation.', '<b>Paraphrase 2 </b><br> Obama presents himself as a problem solver who can unite all Americans no matter how disparate in background, region, or ethnicity and thus create the perfect America that everyone wants.', '<b>Paraphrase 3 </b><br> While recognizing the many kinds of differences—in identity, region, and history—that divide Americans, Obama foregrounds his faith in the need for a united approach to problem solving as the reason for his candidacy.'];
-    
-    
+    var burke = ['Words both unite us and divide us from the nonverbal, but the relationship is not smooth, because words help to create our sense of who “we” are (and this is also true for other forms of symbolic representation, such as art or music, for instance).', 'For Kenneth Burke, words play an enormous and complicated role in developing any clear relationship between us and the world, as they function both as a barrier from, and as an entanglement with the world (5).', 'Kenneth Burke draws our attention to the work of symbolic representation (whether words or more abstract systems like art or music) in both connecting us to, and disconnecting us from, the material world, as well as in constituting our identities (5).'];
+    var obama = ['Obama decided to run for President at this time due to his belief that Americans need to work together to solve challenges, and while we have differences in background, identity, and narratives, we have the same hopes and want the same future for the next generation.', 'Obama presents himself as a problem solver who can unite all Americans no matter how disparate in background, region, or ethnicity and thus create the perfect America that everyone wants.', 'While recognizing the many kinds of differences—in identity, region, and history—that divide Americans, Obama foregrounds his faith in the need for a united approach to problem solving as the reason for his candidacy.'];
 //        ["Don't fear greatness. Either you were born great, you will achieve greatness, or it will be forced onto you.", "Anyone can become great.", "Some people are born into a prosperous family or fortunate situation, some work hard to achieve success, while others become successful through sheer luck."];
         //["We need to understand that progress doesn't necessarily come on its own. Human progress arrives when people work with God, and if they don't, time works against them to prevent progress.", "According to Martin Luther King, Jr., time can do two things: if people do God's work, then time will promote progress, but if they don't, time makes things static.", "Martin Luther King Jr. argues that progress is the direct result of human action toward a moral goal, that without this action societal change will not occur, and that we misunderstand progress when we imagine it as a self-propelled force."];
     var msgIDCounter = 0;
@@ -60,32 +55,16 @@
     nowjs.on("connect", function(){
         return this.now.loadMessages(source, excerpt, tags, hints, paraphrases);
     });
-    var logIndex = 1;
+
 //  *************************************************  rightCol stage *************************************************
     var logString = "";
-//    var deploy = fileSys.readFileSync("deployment.csv", 'utf8');
-////    fileSys.readFile('deployment.csv', function (err, data) {
-////      if (err) throw err;
-////      var lines = data.trim().split('\n');
-////        var lastLine = lines.slice(-1)[0];
-////      console.log(lines);
-////    });
-////  console.log("here ");
-//    var lines = deploy.trim().split('\n');
-//    console.log("line "+lines[0]);
-//    for (each in lines) {
-//        var parameter = lines[each].split(',');
-////        console.log(parameter);
-//        log.push(parameter);
-//    }
-//    
+    
     everyone.now.logCSV = function() {
         for (each in log) {
             var parameter = log[each];
             logString = parameter.join(",")+ "\n" +logString + "\n";
         }
-        fileSys.writeFileSync("log"+logIndex+".csv", logString);
-        logIndex = logIndex + 1;
+        fileSys.writeFileSync("log.csv", logString);
     }
     
     everyone.now.serverMovedMsg = function (username, gameID, msgID, pos) {
@@ -144,12 +123,7 @@
         return everyone.now.updateDislikes(username, gameID, msgID, whichUser, currentScore);
     }
 
-    everyone.now.serverRemoveItem = function(username, gameID, item) {
-        var parameter = [username, gameID, "remove item", item];
-        log.push(parameter);
-    }
-    
-    everyone.now.serverGotNewChat = function(username, gameID, chatMessage, tag, paraphrase, selectedText, numLikes) { //*
+    everyone.now.serverGotNewChat = function(username, gameID, chatMessage, tag, paraphrase, selectedText) { //*
         //update messages made by this user in this game
         //is paraphrase 0 indexed or 1 indexed? 1 indexed
         var msgID = username+"_p"+paraphrase+"m"+msgIDCounter;
@@ -157,7 +131,7 @@
         games[gameID][0][username][3].push(msgID);
         
         //add message to messagesingame
-        games[gameID][1][msgID] = [paraphrase, chatMessage, tag, numLikes, selectedText, username];
+        games[gameID][1][msgID] = [paraphrase, chatMessage, tag, 0, selectedText, username];
         
         var messages = games[gameID][1];//messages in this game
         
@@ -171,7 +145,7 @@
         var parameter = [username, gameID, "got new comment", chatMessage, tag, msgID, paraphrase, selectedText];
         log.push(parameter);
         
-		return everyone.now.gotNewChat(username, gameID, chatMessage, tag, msgID, paraphrase, selectedText, numLikes, msgNum);
+		return everyone.now.gotNewChat(username, gameID, chatMessage, tag, msgID, paraphrase, selectedText, 0, msgNum);
 	};
     
     everyone.now.serverAddMsg = function(username, gameID, msg_id, chatText) {  //*      
@@ -188,17 +162,17 @@
         return everyone.now.addMsg(username, gameID, msgID, msg_id, chatText, 0);
     }
     
-    everyone.now.serverMergeThread = function (username, gameID, msgSource, threadTarget) {//*
+    everyone.now.serverMergeThread = function (username, gameID, threadSource, threadTarget) {//*
         //add ten points to the threadSource user
-//        var msgID = msgSource.substring(3);
-//        var whichUser = games[gameID][1][msgID][5];
-//        var totalScore = parseInt(games[gameID][0][whichUser][1])+parseInt(10);
-//        games[gameID][0][whichUser][1] = totalScore;
+        var msgID = threadSource.substring(2);
+        var whichUser = games[gameID][1][msgID][5];
+        var totalScore = parseInt(games[gameID][0][whichUser][1])+parseInt(10);
+        games[gameID][0][whichUser][1] = totalScore;
         
         
-        var parameter = [username, gameID, "merged threads", msgSource, threadTarget];
+        var parameter = [username, gameID, "merged threads", threadSource, threadTarget];
         log.push(parameter);
-        return everyone.now.mergeThread(username, gameID, msgSource, threadTarget);
+        return everyone.now.mergeThread(username, gameID, threadSource, threadTarget, whichUser, totalScore);
     }
     
 //  *************************************************  paraphrase stage *************************************************
@@ -223,13 +197,10 @@
     
     everyone.now.addParaphraseServer = function(username, gameID, paraphrase) {//*
         
-        if(gameID.toLowerCase().substring(0,7) != "spanish") {
+        if(gameID.toLowerCase().substring(0,4) != "beta") {
             //add paraphrase to server for this game
             var paraphrasesinthisGame = games[gameID][2];
-            var count = paraphrasesinthisGame.length+1;
-            console.log("count "+count);
-            var newParaphrase = '<b>Paraphrase '+count+' </b><br>'+paraphrase;
-            paraphrasesinthisGame.push(newParaphrase);
+            paraphrasesinthisGame.push(paraphrase);
             games[gameID][2] = paraphrasesinthisGame;
             
             //add paraphrase to user
@@ -290,10 +261,6 @@
                     s= burkeS;
                     e= burkeE;
                 }
-                else if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                    s= '';//"Boehner and the Democrats";
-                    e = "";
-                }
                 else {
                     s= obamaS;
                     e= obamaE;
@@ -329,14 +296,6 @@
                         s= burkeS;
                         e= burkeE;
                     }
-                    else if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                        var copyParaphrases = [];
-                        for(i=0; i<essay.length; i++) {
-                            copyParaphrases.push(essay[i]);
-                        }
-                        console.log("here");
-                        s= '';//"Boehner and the Democrats"
-                    }
                     else {
                         var copyParaphrases = [];
                         for(i=0; i<obama.length; i++) {
@@ -352,7 +311,7 @@
                     games[gameID][2] =copyParaphrases;
                 }
                 
-                if(gameID.toLowerCase().substring(0,7) == "spanish") //in tutorial mode so no extra paraprhases
+                if(gameID.toLowerCase().substring(0,4) == "beta") //in tutorial mode so no extra paraprhases
                     return this.now.paraphraseStage(username, gameID, usersScoreInGame, s, e);
                 else if (userParaphraseInGame == "") //user has not created paraphrase for game because just joining game or created new game session //score must be 0
                     return this.now.loginUser(username, gameID, s, e);
@@ -381,10 +340,6 @@
                 s= burkeS;
                 e= burkeE;
             }
-            else if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                s= "";
-                e = "";
-            }
             else {
                 s= obamaS;
                 e= obamaE;
@@ -411,10 +366,6 @@
                     s= burkeS;
                     e= burkeE;
                 }
-                else if(gameID.toLowerCase().substring(0, 7) == "spanish") {
-                    var copyParaphrases = [];
-                    console.log("here");
-                }
                 else {
                     var copyParaphrases = [];
                     for(i=0; i<obama.length; i++) {
@@ -425,7 +376,7 @@
                 }
                 games[gameID] = [users, messages, copyParaphrases];                
             }
-            if(gameID.toLowerCase().substring(0, 7) == "spanish") //in tutorial mode so no extra paraprhases
+            if(gameID.toLowerCase().substring(0, 4) == "beta") //in tutorial mode so no extra paraprhases
                     return this.now.paraphraseStage(username, gameID, 0, s, e);
             else//pass back username, password, gameID, whether this is a new game or not, the users in the game and the messages in the game so far
                 return this.now.newUser(username, gameID, s, e);

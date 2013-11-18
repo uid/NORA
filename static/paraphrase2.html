@@ -1,0 +1,132 @@
+<HTML>
+    <HEAD>
+        <TITLE>NORA</TITLE>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" href="paraphrase.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+        <script type="text/javascript" src="nowjs/now.js"></script>
+        <script src = "client.js"> </script>
+    </HEAD>
+    <body>
+        <!--background="images/confetti.gif" bgproperties="FIXED"-->
+<!--        <img src="images/confetti.gif">-->
+        <div class="loginContainer" id=loginContainer>
+            <section id="content">
+                <b>Login Form</b>
+                <div id=loginMessage>
+                    Enter a username and gameID session. <br> 
+                    If you don't know your gameID session, then leave it blank.<br>
+                    Either click login or new user. <br>                                                    
+                </div>
+                <div>
+                    <input type="text" placeholder="Username" required="" id="username" />
+                </div>
+<!--
+                <div>
+                    <input type="password" placeholder="Password" required="" id="password" />
+                </div>
+-->
+                <div>
+                    <input type="text" placeholder="GameID" required="" id="gameID" />
+                </div>
+                <div class=error id=loginError></div>
+                <div>
+                    <button class=buttonsGen id=login>Log In</button>
+                    <button class=buttonsGen id=newuser>New User</button>
+                </div>
+            </section>
+        </div>
+        <div id=hello style="visibility:hidden">
+            Hello <b><span id=username></span></b>! You are in <b>Game <span id=gameID></span></b>. 
+<!--            Your score is <b><span id=score></span></b>.-->
+            <button id=instructionsButton style="display:none">Hide Instructions</button>
+            <button id=showMe style="display:none">Show Just Me</button>
+        </div>
+            
+        <div class=toast id=whichTag style="display:none"> </div>
+        <div class=toastCol id=toastCol style="display:none">
+            <div class=toast id=writeParaphrase style="display:none; position:relative"> Write a paraphrase for the excerpt below. </div>
+            <div class=toast id=chooseParaphrase style="display:none; position:relative"> Choose a paraphrase here. </div>
+            <div class=toast id=readParaphrase style="display:none; position:relative"> Read the paraphrase. Write a comment with your analysis for each tag.</div>
+<!--            <div class=toast id=attachText style="display:none; position:relative"> If applicable, select text relevant to your comment.</div>-->
+            <div class=toast id=selectText style="display:none; position:relative"> Add another comment.</div>
+            <div class=toast id=tagToast style="display:none; position:relative"> Select the tag that describes your comment. </div>
+            <div class=toast id=writeComment style="display:none; position:relative"> Write your comment. See tag description. </div>
+            <div class=toast id=postedComments style="display:none; position:relative"> Posted comments can be liked, grouped, and rearranged.</div>
+        
+        </div>
+        <div class=generateStage id=leftCol>
+            
+            <div class= unselectable id=source>
+            </div>
+            
+            <div class=unselectable id=excerpt>
+            </div>
+            
+            <div id ="paraphraseSection" data-numTags="" >
+<!--                <div id=instructionsParaphrase>Choose a paraphrase below.</div>-->
+            </div>
+            
+            <div class=unselectable id ="messageSection" style="display:none">
+                <div class=unselectable id="commentingSection">
+<!--                    <div class=tooltips id=paraphraseSelected><span class="paraSelected" id="paraSelectedText"></span></div>-->
+                    <div class=tooltips id=paraphraseSelected><span id="paraSelectedText"></span></div>
+                    <div id="originalCommenting" style="margin-top: 10px; margin-left: 50px; display:none" data-developed="false"></div>
+                    <button id="commentBoxMinimized" style="display:none">Add Another Comment</button>
+                    <div class=unselectable id="commentBox" style="display:none">
+                        <div id=tagSection></div>
+                        <div id="description"> description</div>
+                        <textarea id="chatbox" data-tag=0 data-text="" data-paraphraseActive="" data-selected="" data-type="" data-post="0"></textarea>
+                        <div id="submitChatArea">
+                            <button id="submitChat" style='padding:5px; color:black; margin-top:10px; cursor:pointer;' disabled>Post</button>
+                            <span class=info id=selectTag>Before posting, you must select a tag.</span>
+                        </div>
+                    </div>
+                </div>
+<!--                messages go here-->
+            </div>
+            
+            
+            <div id=paraphrases>
+            </div>
+            <div id=generatePart>
+                <div id=hints>
+                    Paraphrase the excerpt. If you need help, get a 
+                    <button class=buttonsGen id=hint>hint: </button> 
+                    <div id=hintArea></div>
+                    
+                </div>
+                
+                <div id=paraphraseGen>
+                    <textarea id=paraGenChat></textarea>
+                </div>
+                
+                <div id=namePassword>
+                </div>
+                
+                <div id=finishButtons>
+                    <button class=buttonsGen id=done>Done</button>
+                    <span class=error id=paraphraseError></span>
+    <!--                <button class=buttonsGen id=skip>Skip</button>-->
+                </div>
+            </div>
+        </div>
+        
+
+        
+<!--
+        <div class=generateRightCol id=rightCol>
+            <div id=instructions><img src="images/instructions.png" id=instructionsPic style="width:100%"></div>
+        </div>
+-->
+<!--
+        <script>
+            $('.tooltips').tooltip();
+            $('.tooltips').click(function() {
+                $(this).tooltip( "close");
+            })
+        </script>
+-->
+    </body>
+</HTML>

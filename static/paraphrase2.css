@@ -15,7 +15,7 @@ html, body {
 
 #messageSection {
     position: relative;
-    height:95%;
+    height:75%;
 }
 
 #commentBox {
@@ -23,19 +23,20 @@ html, body {
     padding:10px;
     background-color: darkgrey;
     position: absolute;
+    left: 2;
     z-index:2;
 }
 
 #commentBoxMinimized {
     height: 20px;
-/*    position:absolute;*/
+    position:absolute;
     left: 2;
     padding:2px;
     cursor:pointer;
 }
 
 .highlight {
-    border-bottom: 3px solid yellow;
+    border: 2px solid yellow;
     background-color:yellow;
 }
 
@@ -158,7 +159,7 @@ html, body {
 }
 
 .generateStage {
-    padding-top:10px;
+    padding-top:1%;
     padding-left:30%;
 }
 
@@ -189,17 +190,13 @@ html, body {
 
 .paraphraseStage {
 /*    padding-left: 20%;*/
-/*    padding-top: 1%;*/
-    width:30%;
+    padding-top: 1%;
+    width:55%;
     height:95%;
-    background:#f4f4f4;
+/*    background:#f4f4f4;*/
     float:left;
 }
 
-#rightCol {
-    width:70%;
-    float:right;
-}
 
 #excerpt {
     width:50%;
@@ -208,21 +205,8 @@ html, body {
 }
 
 #source {
-    padding-top: 10px;
-    font-size: small;
-    font-weight: bold;
-}
-
-#excerptReview {
-    font-size:small;
-    height: 125px;
-    overflow: auto;
-}
-
-#sourceReview {
-    font-size:small;
+    font-size:14px;
     font-weight:bold;
-    padding-top: 10;
 }
 
 #hintArea {
@@ -243,15 +227,13 @@ html, body {
 }
 
 .paraphrases {
-    float: right;
-    padding: 5px;
-    margin-bottom: 5px;
-    width: 95%;
+    padding:5px;
+    width:100px;
     border:2px solid #000;
     font-size:small;
     background:rgb(177, 177, 177);
 /*    margin-bottom:5px;*/
-/*    font-weight:bold;*/
+    font-weight:bold;
     position:relative;
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -262,8 +244,7 @@ html, body {
 }
 
 #paraphraseSection {
-    margin-bottom:20px;
-    overflow: auto;
+    margin-bottom:10px;
 }
 
 .stars {
@@ -272,15 +253,12 @@ html, body {
 }
 
 .active {
-    padding: 5px;
-    width: 95%;
-    float: right;
-    margin-bottom: 5px;
-    border-top: 2px solid rgb(0, 0, 0);
-    border-left: 2px solid rgb(0, 0, 0);
-    border-bottom: 2px solid rgb(0, 0, 0);
+    padding:5px;
+    width:100px;
+    border:2px solid #000;
     font-size:small;
     background:white;
+    font-weight:bold;
     position:relative;
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
@@ -299,23 +277,23 @@ html, body {
     cursor:default;
 }
 
-/*
 #paraphraseSelected {
     font-size:15px;
     padding:10px;
     background:white;
     border-top:1px solid #000000;
+/*
     border-bottom:1px solid #000000;
     border-bottom-left-radius:10px;
     border-bottom-right-radius:5px;
+*/
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    margin-bottom:5px;
+/*    margin-bottom:5px;*/
     text-align:justify;
     color:black;
     cursor:default;
 }
-*/
 
 .paraSelected {
     background:#BAD1FF;
@@ -431,13 +409,11 @@ html, body {
 	word-wrap: break-word;
 /*    height: 50px;*/
     overflow: auto;
-    background:#F0F8FF;
 }
 
 #tagsnlike {
     padding-bottom:2px;
     padding-left:3px;
-    background:#F0F8FF;
 }
 
 .msgntags {
@@ -475,19 +451,15 @@ html, body {
 }
 
 .thread {
-	width: 175px;
-    background-color: darkgrey;
-    padding:5px;
-    padding-top: 10px;
-    position: absolute;
-    cursor: -webkit-grab;
+	width: 22%;
+    position:absolute;
+    padding: 5px;
+    padding-top:20px;
+    cursor:move;
+    background-color: grey;
 }
 
 .thread:hover {
-    z-index:1;
-}
-
-.msgntags:hover {
     z-index:1;
 }
 

@@ -22,11 +22,6 @@
                 <div>
                     <input type="text" placeholder="Username" required="" id="username" />
                 </div>
-<!--
-                <div>
-                    <input type="password" placeholder="Password" required="" id="password" />
-                </div>
--->
                 <div>
                     <input type="text" placeholder="GameID" required="" id="gameID" />
                 </div>
@@ -36,27 +31,16 @@
                     <button class=buttonsGen id=newuser>New User</button>
                 </div>
             </section>
+        </div>    
+<!--
+        <div id=paraphrases>
         </div>
+-->     
         <div id=hello style="visibility:hidden">
             Hello <b><span id=username></span></b>! You are in <b>Game <span id=gameID></span></b>. 
-<!--            Your score is <b><span id=score></span></b>.-->
-            <button id=instructionsButton style="display:none">Hide Instructions</button>
-            <button id=showMe style="display:none">Show Just Me</button>
         </div>
             
-        <div class=toast id=whichTag style="display:none"> </div>
-        <div class=toastCol id=toastCol style="display:none">
-            <div class=toast id=writeParaphrase style="display:none; position:relative"> Write a paraphrase for the excerpt below. </div>
-            <div class=toast id=chooseParaphrase style="display:none; position:relative"> Choose a paraphrase here. </div>
-            <div class=toast id=readParaphrase style="display:none; position:relative"> Read the paraphrase. Write a comment with your analysis for each tag.</div>
-<!--            <div class=toast id=attachText style="display:none; position:relative"> If applicable, select text relevant to your comment.</div>-->
-            <div class=toast id=selectText style="display:none; position:relative"> Add another comment.</div>
-            <div class=toast id=tagToast style="display:none; position:relative"> Select the tag that describes your comment. </div>
-            <div class=toast id=writeComment style="display:none; position:relative"> Write your comment. See tag description. </div>
-            <div class=toast id=postedComments style="display:none; position:relative"> Posted comments can be liked, grouped, and rearranged.</div>
-        
-        </div>
-        <div class=generateStage id=leftCol>
+        <div class=generateStage id=generateParaphrase style="display:none">
             
             <div class= unselectable id=source>
             </div>
@@ -64,33 +48,8 @@
             <div class=unselectable id=excerpt>
             </div>
             
-            <div id ="paraphraseSection" data-numTags="" >
-<!--                <div id=instructionsParaphrase>Choose a paraphrase below.</div>-->
-            </div>
-            
-            <div class=unselectable id ="messageSection" style="display:none">
-                <div class=unselectable id="commentingSection">
-<!--                    <div class=tooltips id=paraphraseSelected><span class="paraSelected" id="paraSelectedText"></span></div>-->
-                    <div class=tooltips id=paraphraseSelected><span id="paraSelectedText"></span></div>
-                    <div id="originalCommenting" style="margin-top: 10px; margin-left: 50px; display:none" data-developed="false"></div>
-                    <button id="commentBoxMinimized" style="display:none">Add Another Comment</button>
-                    <div class=unselectable id="commentBox" style="display:none">
-                        <div id=tagSection></div>
-                        <div id="description"> description</div>
-                        <textarea id="chatbox" data-tag=0 data-text="" data-paraphraseActive="" data-selected="" data-type="" data-post="0"></textarea>
-                        <div id="submitChatArea">
-                            <button id="submitChat" style='padding:5px; color:black; margin-top:10px; cursor:pointer;' disabled>Post</button>
-                            <span class=info id=selectTag>Before posting, you must select a tag.</span>
-                        </div>
-                    </div>
-                </div>
-<!--                messages go here-->
-            </div>
-            
-            
-            <div id=paraphrases>
-            </div>
             <div id=generatePart>
+            
                 <div id=hints>
                     Paraphrase the excerpt. If you need help, get a 
                     <button class=buttonsGen id=hint>hint: </button> 
@@ -108,25 +67,60 @@
                 <div id=finishButtons>
                     <button class=buttonsGen id=done>Done</button>
                     <span class=error id=paraphraseError></span>
-    <!--                <button class=buttonsGen id=skip>Skip</button>-->
                 </div>
             </div>
         </div>
-        
-
-        
+        <div id=reviewParaphrase style="display:none">
+            
+            <div id ="leftCol">
+                <div class= unselectable id=sourceReview data-paraphraseActive="">
+                </div>
+                
+                <div class=unselectable id=excerptReview>
+                </div>
+                
+                <div class=unselectable id=paraphraseSection>
+                </div>
+            </div>
+            <div id ="rightCol">
+                
 <!--
-        <div class=generateRightCol id=rightCol>
-            <div id=instructions><img src="images/instructions.png" id=instructionsPic style="width:100%"></div>
+                    <div class=unselectable id="commentingSection">
+                        <div class=tooltips id=paraphraseSelected><span class="paraSelected" id="paraSelectedText"></span></div>
+                        <div class=tooltips id=paraphraseSelected><span id="paraSelectedText"></span></div>
+-->
+            <div id="originalCommenting" style="margin-top: 20px; margin-left: 20%; display:none" data-developed="false"></div>
+                <button id="commentBoxMinimized" style="display:none">Add Another Comment</button>
+                <div class=unselectable id="commentBox" style="display:none">
+                    <div id=tagSection></div>
+                    <div id="description"> description</div>
+                    <textarea id="chatbox" data-tag=0 data-text="" data-paraphraseActive="" data-selected="" data-type="" data-post="0"></textarea>
+                    <div id="submitChatArea">
+                    <button id="submitChat" style='padding:5px; color:black; margin-top:10px; cursor:pointer;' disabled>Post</button>               
+                    <span class=info id=selectTag>Before posting, you must select a tag.</span>
+                </div>
+            </div>
+                <div class=unselectable id ="messageSection" style="display:none">
+                </div>
+            
+<!--                messages go here-->
+                <!--
+        <div class=toast id=whichTag style="display:none"> </div>
+        <div class=toastCol id=toastCol style="display:none">
+            <div class=toast id=writeParaphrase style="display:none; position:relative"> Write a paraphrase for the excerpt below. </div>
+            <div class=toast id=chooseParaphrase style="display:none; position:relative"> Choose a paraphrase here. </div>
+            <div class=toast id=readParaphrase style="display:none; position:relative"> Read the paraphrase. Write a comment with your analysis for each tag.</div>
+            <div class=toast id=attachText style="display:none; position:relative"> If applicable, select text relevant to your comment.</div>
+            <div class=toast id=selectText style="display:none; position:relative"> Add another comment.</div>
+            <div class=toast id=tagToast style="display:none; position:relative"> Select the tag that describes your comment. </div>
+            <div class=toast id=writeComment style="display:none; position:relative"> Write your comment. See tag description. </div>
+            <div class=toast id=postedComments style="display:none; position:relative"> Posted comments can be liked, grouped, and rearranged.</div>
+        
         </div>
 -->
-<!--
-        <script>
-            $('.tooltips').tooltip();
-            $('.tooltips').click(function() {
-                $(this).tooltip( "close");
-            })
-        </script>
--->
+            </div>
+            
+        </div>
+        
     </body>
 </HTML>
