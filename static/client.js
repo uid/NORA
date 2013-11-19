@@ -1401,10 +1401,10 @@ now.ready(function () {
         var show = $('#leftCol').hasClass("paraphraseStage");
         if(gameID == myGameID && myUsername != username && show) {
             
-            var count = $("#paraphraseSection > span").size()+1;
+            var count = $("#paraphraseSection > div").size()+1;
 //            $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"><b>Paraphrase '+count+' </b><br> '+paraphrasesInGame[each]+'</div>');
             
-            $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"> '+paraphrasesInGame[each]+'</div>');
+            $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"><b>Paraphrase '+count+' </b><br>'+paraphrase+'</div>');
             
             
 //            var paraphraseDiv = '<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" >Paraphrase '+count+' </div>';

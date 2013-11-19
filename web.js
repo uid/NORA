@@ -25,17 +25,17 @@
     var paraphrases = ['a', 'b', 'c'];
     
     var burkeS = "Kenneth Burke’s “Definition of Man”:";
-    var burkeE = "In being a link between us and the nonverbal, words are by the same token a screen separating us from the nonverbal—though the statement gets tangled in its own traces, since so much of the “we” that is separated from the nonverbal by the verbal would not even exist were it not for the verbal (or for our symbolicity in general, since the same applies to the symbol systems of dance, music, painting, and the like) (Burke 5).";
+    var burkeE = "You persuade a man only insofar as you can talk his language by speech, gesture, tonality, order, image, attitude, idea, identifying your ways with his. Persuasion by flattery is but a special case of persuasion in general. But flattery can safely serve as our paradigm if we systematically widen its meaning, to see behind it the conditions of identification or consubstantiality in general (Burke 55).";
     var obamaS = "Obama’s “A More Perfect Union”:";
     var obamaE = "I chose to run for President at this moment in history because I believe deeply that we cannot solve the challenges of our time unless we solve them together, unless we perfect our union by understanding that we may have different stories, but we hold common hopes; that we may not look the same and may not have come from the same place, but we all want to move in the same direction: towards a better future for our children and our grandchildren.";
     
     var hints = ["Is your language new and different from the original?", "Is your structure different from the original?", "Do you capture the meaning of the original passage?"];
 //     var tags = {grammar: "Does it follow the rules of the language (e.g., subject-verb-agreement, tense, etc.)?", meaning: "Is the meaning/story of the passage clear?", style: "Is the vocabulary/word-choice appropriate in order to convey the author's intended meaning?"};
-    var tags  = {1: '¿Qué representa el viento (wind) en la película?', 2:'¿Qué papel (role) desempeñan (play) las madres en la película?' , 3: '¿Qué papel desempeñan los personajes masculinos?', 4:'¿Por qué se llama la película Volver?'}
+//    var tags  = {1: '¿Qué representa el viento (wind) en la película?', 2:'¿Qué papel (role) desempeñan (play) las madres en la película?' , 3: '¿Qué papel desempeñan los personajes masculinos?', 4:'¿Por qué se llama la película Volver?'}
     var essay = ['¿Qué representa el viento (wind) en la película?', '¿Qué papel (role) desempeñan (play) las madres en la película?', '¿Qué papel desempeñan los personajes masculinos?', '¿Por qué se llama la película Volver?'];
-//    var tags = {language: "Is the language sufficiently new and original?", structure: "Does the structure convey the idea from the source in the writers' own words?", meaning: "Does the paraphrase accurately reflect the meaning of the original passage?"};
+    var tags = {language: "Is the language sufficiently new and original?", structure: "Does the structure convey the idea from the source in the writers' own words?", meaning: "Does the paraphrase accurately reflect the meaning of the original passage?"};
 //    var paraphrases = ['Malcolm Gladwell argues that the quality of a college—how well it educates, challenges, and inspires its students—cannot be measured directly. For this reason, he thinks that U.S. News’ algorithm’s reliance on proxies to measure educational quality yields results that are “flimsy at best.”', 'Gladwell argues that the proxies that U.S. News uses to measure a college’s quality are insufficient because educational quality cannot really be measured.'];
-    var burke = ['<b>Paraphrase 1 </b><br> Words both unite us and divide us from the nonverbal, but the relationship is not smooth, because words help to create our sense of who “we” are (and this is also true for other forms of symbolic representation, such as art or music, for instance).', '<b>Paraphrase 2 </b><br> For Kenneth Burke, words play an enormous and complicated role in developing any clear relationship between us and the world, as they function both as a barrier from, and as an entanglement with the world (5).', '<b>Paraphrase 3 </b><br> Kenneth Burke draws our attention to the work of symbolic representation (whether words or more abstract systems like art or music) in both connecting us to, and disconnecting us from, the material world, as well as in constituting our identities (5).'];
+    var burke = ['<b>Paraphrase 1 </b><br> We convince other people by being able to speak in the same ways that they do; for instance, by using identical kinds of words and images, sentence structures, tone of voice, hand movements, etc. Flattery is one specific way to gain accord, but it reveals the pattern of persuasion more widely, showing how others come to identify and agree with us.', '<b>Paraphrase 2 </b><br> For Kenneth Burke, all persuasion is just flattery, and he believes that we only agree with each other and do what others want when they specifically mirror our ways of acting, thinking, and talking.', '<b>Paraphrase 3 </b><br> Kenneth Burke’s theory of identification suggests that persuasion functions through systems of similarity that a speaker creates with the audience, and that this identification is similar in kind, if not in extent, to flattery, which can function as a model. When a speaker actively chooses ways of speaking—phrasing, figures of speech, lines of thought—that align with those of the audience, the audience sees themselves as sharing an identity with the speaker, and thus can be convinced.'];
     var obama = ['<b>Paraphrase 1 </b><br> Obama decided to run for President at this time due to his belief that Americans need to work together to solve challenges, and while we have differences in background, identity, and narratives, we have the same hopes and want the same future for the next generation.', '<b>Paraphrase 2 </b><br> Obama presents himself as a problem solver who can unite all Americans no matter how disparate in background, region, or ethnicity and thus create the perfect America that everyone wants.', '<b>Paraphrase 3 </b><br> While recognizing the many kinds of differences—in identity, region, and history—that divide Americans, Obama foregrounds his faith in the need for a united approach to problem solving as the reason for his candidacy.'];
     
     
@@ -205,7 +205,6 @@
     
     everyone.now.getParaphraseServer = function(gameID, num) {
         var para = games[gameID][2][num];
-        console.log
         //passing tags too for firstChats Comment box
         return this.now.fillInParaphrase(para, num, tags);
     }
@@ -228,7 +227,6 @@
             //add paraphrase to server for this game
             var paraphrasesinthisGame = games[gameID][2];
             var count = paraphrasesinthisGame.length+1;
-            console.log("count "+count);
             var newParaphrase = '<b>Paraphrase '+count+' </b><br>'+paraphrase;
             paraphrasesinthisGame.push(newParaphrase);
             games[gameID][2] = paraphrasesinthisGame;
@@ -283,6 +281,7 @@
             if(usersInGame[username][0] == password) {
                 //password matches
                 console.log(username);
+                console.log(gameID);
                 var usersScoreInGame = 0;
                 var userParaphraseInGame = "";
                 var s = "";
@@ -335,7 +334,6 @@
                         for(i=0; i<essay.length; i++) {
                             copyParaphrases.push(essay[i]);
                         }
-                        console.log("here");
                         s= '';//"Boehner and the Democrats"
                     }
                     else {
@@ -373,6 +371,7 @@
     
     everyone.now.newuserServer = function(username, password, gameID) {
         console.log(username);
+        console.log(gameID);
         if (username in usersInGame) //means user must choose a new username
             return this.now.usernameExists();
         else {
@@ -417,7 +416,6 @@
                     for(i=0; i<essay.length; i++) {
                         copyParaphrases.push(essay[i]);
                     }
-                    console.log("here");
                 }
                 else {
                     var copyParaphrases = [];
