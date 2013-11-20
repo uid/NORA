@@ -881,9 +881,14 @@ now.ready(function () {
                         $('#commentBoxMinimized').css('display','');
                         now.serverFirstTime(username, gameID, num);
                         var num = parseInt(sentence)+1;
+                        var next = num+1;
                         var countSections = $("#messageSection > div").size();
-                        if($('#paraphrase'+num).length == 1) {
+                        if($('#paraphrase'+num).length == 1 && $('#paraphrase'+num).attr('data-original')== 'true' ) {
                             $('#paraphrase'+num).click();
+                            document.getElementById('paraphraseSection').scrollTop = document.getElementById('paraphraseSection').scrollTop+(document.getElementById('paraphraseSection').scrollHeight/countSections);
+                        }
+                        else if($('#paraphrase'+next).length == 1 && $('#paraphrase'+next).attr('data-original') == 'true') {
+                            $('#paraphrase'+next).click();
                             document.getElementById('paraphraseSection').scrollTop = document.getElementById('paraphraseSection').scrollTop+(document.getElementById('paraphraseSection').scrollHeight/countSections);
                         }
                         else {
@@ -945,7 +950,7 @@ now.ready(function () {
                     now.newMessage();
             });
     
-    now.loadParaphrases = function(gameID, tags, paraphrasesInGame) {
+    now.loadParaphrases = function(username, gameID, tags, paraphrasesInGame, myParaphrase) {
         //examples is a list provided by teacher
         //paraphrasesInGame is a dictionary where the username is the key and the value is the paraphrase provided by that user
 //        var myGameID = $('span#gameID').text();
@@ -1044,9 +1049,15 @@ now.ready(function () {
         //generate paraphrases on page
         var count = 1;
         for (each in paraphrasesInGame) {    
-          
+            var indexBr = paraphrasesInGame[each].indexOf("<br>");
+            var paraphraseCompare = paraphrasesInGame[each].substring(indexBr+4);
 //            $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"><b>Paraphrase '+count+' </b><br> '+paraphrasesInGame[each]+'</div>');
-            $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"> '+paraphrasesInGame[each]+'</div>');
+            if(paraphraseCompare == myParaphrase) {
+                $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="false"> '+paraphrasesInGame[each]+'</div>');
+            }
+            else {
+                $('div#paraphraseSection').append('<div class=paraphrases id=paraphrase'+count+' data-num='+count+' data-type=user data-tags="" data-original="true"> '+paraphrasesInGame[each]+'</div>');
+            }
             count+=1;
 //            $('div#paraphrases').append(paraphraseDiv);
         }
@@ -1172,7 +1183,7 @@ now.ready(function () {
             $('#commentBox').css('display', '');
         });
         //load paraphrases submitted so far
-        now.loadParaphrasesServer(gameID);
+        now.loadParaphrasesServer(username, gameID);
         
         now.loadEverythingServer(username, gameID);
     }

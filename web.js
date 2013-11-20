@@ -80,12 +80,12 @@
 //    }
 //    
     everyone.now.logCSV = function() {
+//        console.log(log);
         for (each in log) {
             var parameter = log[each];
             logString = parameter.join(",")+ "\n" +logString + "\n";
         }
-        fileSys.writeFileSync("log"+logIndex+".csv", logString);
-        logIndex = logIndex + 1;
+        fileSys.writeFileSync("log.csv", logString);
     }
     
     everyone.now.serverMovedMsg = function (username, gameID, msgID, pos) {
@@ -138,7 +138,7 @@
         }
         games[gameID][0][username][4] = msgsLiked;
         
-        var parameter = ["unliked a message", msgID];
+        var parameter = [username, gameID, "unliked a message", msgID];
         log.push(parameter);
         
         return everyone.now.updateDislikes(username, gameID, msgID, whichUser, currentScore);
@@ -210,15 +210,19 @@
     }
     
     everyone.now.serverFirstTime = function(username, gameID, paraphraseGame) {
-         var parameter = [username, gameID, "wrote first comments", paraphraseGame];
+        var parameter = [username, gameID, "wrote first comments", paraphraseGame-1];
+//        console.log(log);
         log.push(parameter);
+//        console.log("after");
+//        console.log(log);
     }
     
 //  *************************************************  generate stage *************************************************
     
-    everyone.now.loadParaphrasesServer = function(gameID) { //*
+    everyone.now.loadParaphrasesServer = function(username, gameID) { //*
         var paraphrasesInGame = games[gameID][2];//dictionary of paraphrases
-        return this.now.loadParaphrases(gameID, tags, paraphrasesInGame);
+        var myParaphrase = games[gameID][0][username][2];
+        return this.now.loadParaphrases(username, gameID, tags, paraphrasesInGame, myParaphrase);
     }
     
     everyone.now.addParaphraseServer = function(username, gameID, paraphrase) {//*
